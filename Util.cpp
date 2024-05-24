@@ -50,20 +50,20 @@ std::vector<Vertex> Util::buildFloor() {
 
 	// Define vertices for a square floor using two triangles to cover the entire area
 	// Triangle 1
-	verts.push_back(Vertex::PC(glm::vec3(-10, -1, -10), glm::vec4(1, 1, 1, 1))); // Bottom-left
-	verts.push_back(Vertex::PC(glm::vec3(10, -1, -10), glm::vec4(1, 1, 1, 1)));  // Bottom-right
-	verts.push_back(Vertex::PC(glm::vec3(10, -1, 10), glm::vec4(1, 1, 1, 1)));   // Top-right
+	verts.push_back(Vertex::PC(glm::vec3(-5, -1, -5), glm::vec4(1, 1, 1, 1))); // Bottom-left
+	verts.push_back(Vertex::PC(glm::vec3(5, -1, -5), glm::vec4(1, 1, 1, 1)));  // Bottom-right
+	verts.push_back(Vertex::PC(glm::vec3(5, -1, 5), glm::vec4(1, 1, 1, 1)));   // Top-right
 
 	// Triangle 2
-	verts.push_back(Vertex::PC(glm::vec3(-10, -1, -10), glm::vec4(1, 1, 1, 1))); // Bottom-left
-	verts.push_back(Vertex::PC(glm::vec3(10, -1, 10), glm::vec4(1, 1, 1, 1)));   // Top-right
-	verts.push_back(Vertex::PC(glm::vec3(-10, -1, 10), glm::vec4(1, 1, 1, 1)));  // Top-left
+	verts.push_back(Vertex::PC(glm::vec3(-5, -1, -5), glm::vec4(1, 1, 1, 1))); // Bottom-left
+	verts.push_back(Vertex::PC(glm::vec3(5, -1, 5), glm::vec4(1, 1, 1, 1)));   // Top-right
+	verts.push_back(Vertex::PC(glm::vec3(-5, -1, 5), glm::vec4(1, 1, 1, 1)));  // Top-left
 
 	// Additional triangle to cover the remaining part of the square
 	// Triangle 3
-	verts.push_back(Vertex::PC(glm::vec3(-10, -1, -10), glm::vec4(1, 1, 1, 1))); // Bottom-left
-	verts.push_back(Vertex::PC(glm::vec3(10, -1, -10), glm::vec4(1, 1, 1, 1)));  // Bottom-right
-	verts.push_back(Vertex::PC(glm::vec3(-10, -1, 10), glm::vec4(1, 1, 1, 1)));  // Top-left
+	verts.push_back(Vertex::PC(glm::vec3(-5, -1, -5), glm::vec4(1, 1, 1, 1))); // Bottom-left
+	verts.push_back(Vertex::PC(glm::vec3(5, -1, -5), glm::vec4(1, 1, 1, 1)));  // Bottom-right
+	verts.push_back(Vertex::PC(glm::vec3(-5, -1, 5), glm::vec4(1, 1, 1, 1)));  // Top-left
 
 	return verts;
 }

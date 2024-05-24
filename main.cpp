@@ -78,7 +78,7 @@ Entity* player;
 Entity* floorEntity;
 
 std::default_random_engine generator;
-std::uniform_real_distribution<float> distribution(-10.0f, 10.0f);
+std::uniform_real_distribution<float> distribution(-5.0f, 5.0f);
 std::uniform_real_distribution<float> y_distribution(0.5f, 10.0f);
 
 int main(void)
