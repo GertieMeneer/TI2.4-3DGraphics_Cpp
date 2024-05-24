@@ -40,6 +40,7 @@ struct ColliderComponent {
 
 struct LifetimeComponent {
     float lifetime;
+    float timeAlive; // Time since the particle was spawned
 };
 
 // Entity
@@ -160,17 +161,13 @@ void update(float deltaTime)
         }
     }
 
-    // Remove particles that have exceeded their lifetime
+    // Update particle lifetimes
     auto currentTime = std::chrono::steady_clock::now();
-    for (auto it = entities.begin(); it != entities.end();)
+    for (auto& entity : entities)
     {
-        if ((*it)->lifetime && std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count() >= (*it)->lifetime->lifetime)
+        if (entity->lifetime)
         {
-            it = entities.erase(it);
-        }
-        else
-        {
-            ++it;
+            entity->lifetime->timeAlive = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
         }
     }
 }
@@ -199,34 +196,31 @@ void draw()
 
 void spawnParticles(float deltaTime)
 {
-    // Spawn particles every 2 seconds
+    // Spawn a particle every 2 seconds
     static float spawnTimer = 0.0f;
     spawnTimer += deltaTime;
     if (spawnTimer >= 2.0f)
     {
-        for (int i = 0; i < 10; ++i) // Spawn 10 particles for example
-        {
-            float x = distribution(generator);
-            float y = y_distribution(generator);
-            float z = distribution(generator);
+        float x = distribution(generator);
+        float y = y_distribution(generator);
+        float z = distribution(generator);
 
-            auto particle = std::make_unique<Entity>();
-            particle->transform->position = glm::vec3(x, y, z);
-            particle->transform->scale = glm::vec3(0.5f);
-            particle->velocity = std::make_unique<VelocityComponent>();
-            particle->velocity->velocity = glm::vec3(0, 0, 2.0f); // Move towards the player
+        auto particle = std::make_unique<Entity>();
+        particle->transform->position = glm::vec3(x, y, z);
+        particle->transform->scale = glm::vec3(0.5f);
+        particle->velocity = std::make_unique<VelocityComponent>();
+        particle->velocity->velocity = glm::vec3(0, 0, 2.0f); // Move towards the player
 
-            particle->renderable = std::make_unique<RenderableComponent>();
-            particle->renderable->vertices = Util::buildCube(particle->transform->position, particle->transform->scale, glm::vec4(1, 0, 0, 1));
+        particle->renderable = std::make_unique<RenderableComponent>();
+        particle->renderable->vertices = Util::buildCube(particle->transform->position, particle->transform->scale, glm::vec4(1, 0, 0, 1));
 
-            particle->collider = std::make_unique<ColliderComponent>();
-            particle->collider->radius = 0.5f; // Adjust as needed
+        particle->collider = std::make_unique<ColliderComponent>();
+        particle->collider->radius = 0.5f; // Adjust as needed
 
-            particle->lifetime = std::make_unique<LifetimeComponent>();
-            particle->lifetime->lifetime = 30.0f; // Lifetime of 30 seconds
+        particle->lifetime = std::make_unique<LifetimeComponent>();
+        particle->lifetime->lifetime = 30.0f; // Lifetime of 30 seconds
 
-            entities.push_back(std::move(particle));
-        }
+        entities.push_back(std::move(particle));
         spawnTimer = 0.0f;
     }
 }
