@@ -133,7 +133,7 @@ void init()
 	player->collider = std::make_unique<ColliderComponent>();
 
 	// Set bounding box for player collider
-	float playerSize = 2.0f; // Adjust as needed
+	float playerSize = 1.0f; // Adjust as needed
 	player->collider->minBounds = player->transform->position - glm::vec3(playerSize);
 	player->collider->maxBounds = player->transform->position + glm::vec3(playerSize);
 
@@ -198,7 +198,7 @@ void draw()
 
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	glm::mat4 projection = glm::perspective(glm::radians(75.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
 
 	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(camera->getMatrix());
@@ -289,32 +289,25 @@ void drawPlayerColliderBoundsBox()
 	glEnd();
 }
 
-
-
 void spawnParticles(float deltaTime)
 {
 	// Spawn a particle every 2 seconds
 	static float spawnTimer = 0.0f;
 	spawnTimer += deltaTime;
-	if (spawnTimer >= 1.0f) // Adjust spawn rate as needed
+	if (spawnTimer >= 0.5f) // Adjust spawn rate as needed
 	{
 		float x = distribution(generator);
-		float y = y_distribution(generator);
 		float z = distribution(generator);
 
 		auto particle = std::make_unique<Entity>();
-		particle->transform->position = glm::vec3(x, y, z);
+		particle->transform->position = glm::vec3(x, 7.0f, z); // Start position at a height
 		particle->transform->scale = glm::vec3(0.5f);
 
-		// Generate random direction components
-		float randomX = distribution(generator);
-		float randomY = distribution(generator);
-		float randomZ = distribution(generator);
-
-		glm::vec3 direction = glm::normalize(glm::vec3(randomX, randomY, randomZ) - particle->transform->position);
+		// Set direction to move downwards
+		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);
 
 		particle->velocity = std::make_unique<VelocityComponent>();
-		particle->velocity->velocity = direction * 2.0f; // Adjust speed as needed
+		particle->velocity->velocity = direction * 10.0f; // Adjust speed as needed
 
 		particle->renderable = std::make_unique<RenderableComponent>();
 		particle->renderable->vertices = Util::buildCube(particle->transform->position, particle->transform->scale, glm::vec4(1, 0, 0, 1));
@@ -334,8 +327,6 @@ void spawnParticles(float deltaTime)
 		spawnTimer = 0.0f;
 	}
 }
-
-
 
 void moveEntities(float deltaTime)
 {
