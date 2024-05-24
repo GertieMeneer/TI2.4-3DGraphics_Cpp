@@ -40,7 +40,7 @@ struct ColliderComponent {
 
 struct LifetimeComponent {
     float lifetime;
-    float timeAlive; // Time since the particle was spawned
+    std::chrono::steady_clock::time_point spawnTime; // Time when the particle was spawned
 };
 
 // Entity
@@ -77,8 +77,6 @@ std::default_random_engine generator;
 std::uniform_real_distribution<float> distribution(-10.0f, 10.0f);
 std::uniform_real_distribution<float> y_distribution(0.5f, 10.0f);
 
-std::chrono::time_point<std::chrono::steady_clock> startTime;
-
 int main(void)
 {
     if (!glfwInit())
@@ -97,7 +95,6 @@ int main(void)
     init();
 
     float lastTime = (float)glfwGetTime();
-    startTime = std::chrono::steady_clock::now();
 
     while (!glfwWindowShouldClose(window))
     {
@@ -161,14 +158,23 @@ void update(float deltaTime)
         }
     }
 
-    // Update particle lifetimes
+    // Update particle lifetimes and remove expired particles
     auto currentTime = std::chrono::steady_clock::now();
-    for (auto& entity : entities)
+    auto it = entities.begin();
+    while (it != entities.end())
     {
-        if (entity->lifetime)
+        if ((*it)->lifetime)
         {
-            entity->lifetime->timeAlive = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime).count();
+            auto spawnTime = (*it)->lifetime->spawnTime;
+            auto duration = std::chrono::duration_cast<std::chrono::seconds>(currentTime - spawnTime);
+            auto timeAlive = duration.count();
+            if (timeAlive >= (*it)->lifetime->lifetime)
+            {
+                it = entities.erase(it); // Remove expired particle
+                continue; // Skip to the next particle
+            }
         }
+        ++it;
     }
 }
 
@@ -199,7 +205,7 @@ void spawnParticles(float deltaTime)
     // Spawn a particle every 2 seconds
     static float spawnTimer = 0.0f;
     spawnTimer += deltaTime;
-    if (spawnTimer >= 2.0f)
+    if (spawnTimer >= 1.0f) // Adjust spawn rate as needed
     {
         float x = distribution(generator);
         float y = y_distribution(generator);
@@ -218,7 +224,8 @@ void spawnParticles(float deltaTime)
         particle->collider->radius = 0.5f; // Adjust as needed
 
         particle->lifetime = std::make_unique<LifetimeComponent>();
-        particle->lifetime->lifetime = 30.0f; // Lifetime of 30 seconds
+        particle->lifetime->lifetime = 10.0f; // Lifetime of 10 seconds
+        particle->lifetime->spawnTime = std::chrono::steady_clock::now(); // Record spawn time
 
         entities.push_back(std::move(particle));
         spawnTimer = 0.0f;
