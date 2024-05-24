@@ -130,16 +130,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoudingBoxComponent.cpp" />
     <ClCompile Include="cam.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ParticleComponent.cpp" />
     <ClCompile Include="tigl.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoundingBoxComponent.h" />
     <ClInclude Include="cam.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="ParticleComponent.h" />
     <ClInclude Include="tigl.h" />
     <ClInclude Include="Util.h" />

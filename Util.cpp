@@ -44,3 +44,20 @@ std::vector<Vertex> Util::buildCube(const glm::vec3& p, const glm::vec3& s, cons
 	verts.push_back(Vertex::PCTN(p + glm::vec3(s.x, -s.y, s.z), color, glm::vec2(0, 1), glm::vec3(0, 0, 1)));
 	return verts;
 }
+
+std::vector<Vertex> Util::buildFloor() {
+	std::vector<Vertex> verts;
+
+
+	// Triangle 1
+	verts.push_back(Vertex::PC(glm::vec3(-10, -1, -10), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(-10, -1, 10), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(10, -1, 10), glm::vec4(1, 1, 1, 1)));
+
+	// Triangle 2
+	verts.push_back(Vertex::PC(glm::vec3(-10, -1, -10), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(10, -1, -10), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(10, -1, 10), glm::vec4(1, 1, 1, 1)));
+
+	return verts;
+}

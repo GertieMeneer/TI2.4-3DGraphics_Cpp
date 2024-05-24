@@ -92,30 +92,17 @@ void draw()
 
 	glEnable(GL_DEPTH_TEST);
 
-	tigl::begin(GL_TRIANGLES);
-
-	// rainbow traingle
-	tigl::addVertex(Vertex::PC(glm::vec3(-2, -1, -4), glm::vec4(1, 0, 0, 1)));
-	tigl::addVertex(Vertex::PC(glm::vec3(2, -1, -4), glm::vec4(0, 1, 0, 1)));
-	tigl::addVertex(Vertex::PC(glm::vec3(0, 1, -4), glm::vec4(0, 0, 1, 1)));
-
-	// square first traingle
-	tigl::addVertex(Vertex::PC(glm::vec3(-10, -1, -10), glm::vec4(1, 1, 1, 1)));
-	tigl::addVertex(Vertex::PC(glm::vec3(-10, -1, 10), glm::vec4(1, 1, 1, 1)));
-	tigl::addVertex(Vertex::PC(glm::vec3(10, -1, 10), glm::vec4(1, 1, 1, 1)));
-
-	// square second traingle
-	tigl::addVertex(Vertex::PC(glm::vec3(-10, -1, -10), glm::vec4(1, 1, 1, 1)));
-	tigl::addVertex(Vertex::PC(glm::vec3(10, -1, -10), glm::vec4(1, 1, 1, 1)));
-	tigl::addVertex(Vertex::PC(glm::vec3(10, -1, 10), glm::vec4(1, 1, 1, 1)));
-
-	tigl::end();
+	
 
 	std::vector<Vertex> verts;
 
 	auto cube = Util::buildCube(glm::vec3(0, 0, -10), glm::vec3(0.5, 0.5, 0.5), glm::vec4(1, 0, 0, 1));
+	auto floor = Util::buildFloor();
 
 	verts.insert(verts.end(), cube.begin(), cube.end());
-	tigl::drawVertices(GL_QUADS, verts);
+	verts.insert(verts.end(), floor.begin(), floor.end());
+
+	tigl::drawVertices(GL_QUADS, cube);
+	tigl::drawVertices(GL_TRIANGLES, floor);
 	glDisable(GL_DEPTH_TEST);
 }
