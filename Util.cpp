@@ -68,10 +68,6 @@ std::vector<Vertex> Util::buildFloor() {
 	return verts;
 }
 
-
-
-
-
 std::vector<Vertex> Util::buildHitbox(glm::vec3 minBounds, glm::vec3 maxBounds) {
 	std::vector<Vertex> verts;
 
