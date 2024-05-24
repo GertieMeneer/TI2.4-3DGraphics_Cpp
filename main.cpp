@@ -70,6 +70,7 @@ void moveEntities(float deltaTime);
 void renderEntities();
 bool checkCollision(const Entity& a, const Entity& b);
 void drawPlayerColliderBoundsBox();
+void drawParticleColliderBoundsBox();
 void renderFloor();
 
 // Globals
@@ -210,6 +211,9 @@ void draw()
     // Render hit zone around the player
     drawPlayerColliderBoundsBox();
 
+    // Render collider boxes around particles
+    drawParticleColliderBoundsBox();
+
     // Render the floor
     renderFloor();
 
@@ -218,6 +222,7 @@ void draw()
 
     glDisable(GL_DEPTH_TEST);
 }
+
 
 void drawPlayerColliderBoundsBox()
 {
@@ -262,6 +267,59 @@ void drawPlayerColliderBoundsBox()
 
     glEnd();
 }
+
+void drawParticleColliderBoundsBox()
+{
+    // Loop through all entities and draw collider boxes for particles
+    for (const auto& entity : entities)
+    {
+        // Check if the entity is a particle and has a collider
+        if (entity.get() != player && entity->collider)
+        {
+            // Get particle's collider bounds
+            glm::vec3 minBounds = entity->collider->minBounds;
+            glm::vec3 maxBounds = entity->collider->maxBounds;
+
+            // Calculate the corners of the box relative to the particle's position
+            glm::vec3 corners[8] = {
+                entity->transform->position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
+                entity->transform->position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+                entity->transform->position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+                entity->transform->position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+                entity->transform->position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+                entity->transform->position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+                entity->transform->position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
+                entity->transform->position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+            };
+
+            // Apply camera's view matrix
+            glm::mat4 viewMatrix = camera->getMatrix();
+
+            // Draw the box using GL_LINES
+            glBegin(GL_LINES);
+            glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
+
+            // Draw lines between corners to form the edges of the box
+            for (int i = 0; i < 4; ++i)
+            {
+                // Bottom face
+                glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+                glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
+
+                // Top face
+                glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
+                glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
+
+                // Connections between top and bottom faces
+                glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+                glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
+            }
+
+            glEnd();
+        }
+    }
+}
+
 
 
 
