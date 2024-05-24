@@ -35,7 +35,8 @@ struct RenderableComponent {
 };
 
 struct ColliderComponent {
-    float radius;
+    glm::vec3 minBounds; // Minimum coordinates of the bounding box
+    glm::vec3 maxBounds; // Maximum coordinates of the bounding box
 };
 
 struct LifetimeComponent {
@@ -82,7 +83,7 @@ int main(void)
     if (!glfwInit())
         throw "Could not initialize glfw";
 
-    window = glfwCreateWindow(1280, 720, "Shooting Game", NULL, NULL);
+    window = glfwCreateWindow(1600, 980, "Shooting Game", NULL, NULL);
 
     if (!window)
     {
@@ -129,7 +130,11 @@ void init()
     player = new Entity();
     player->transform->position = glm::vec3(0, 0, 0);
     player->collider = std::make_unique<ColliderComponent>();
-    player->collider->radius = 0.5f; // Adjust as needed
+
+    // Set bounding box for player collider
+    float playerSize = 2.0f; // Adjust as needed
+    player->collider->minBounds = player->transform->position - glm::vec3(playerSize);
+    player->collider->maxBounds = player->transform->position + glm::vec3(playerSize);
 
     entities.push_back(std::unique_ptr<Entity>(player));
 
@@ -142,9 +147,16 @@ void init()
     entities.push_back(std::move(floor));
 }
 
+
 void update(float deltaTime)
 {
     camera->update(window, deltaTime);
+    player->transform->position = camera->getPosition(); // Update player's position to match camera
+
+    // Debugging output
+    //std::cout << "Player position: " << player->transform->position.x << ", " << player->transform->position.y << ", " << player->transform->position.z << std::endl;
+    //std::cout << "Camera position: " << camera->getPosition().x << ", " << camera->getPosition().y << ", " << camera->getPosition().z << std::endl;
+
     spawnParticles(deltaTime);
     moveEntities(deltaTime);
 
@@ -178,6 +190,7 @@ void update(float deltaTime)
     }
 }
 
+
 void draw()
 {
     glClearColor(0.3f, 0.4f, 0.6f, 1.0f);
@@ -195,10 +208,61 @@ void draw()
 
     glEnable(GL_DEPTH_TEST);
 
+    // Render hit zone around the player
+    glm::vec3 minBounds = player->collider->minBounds + player->transform->position;
+    glm::vec3 maxBounds = player->collider->maxBounds + player->transform->position;
+
+    std::vector<Vertex> boxVertices;
+
+    // Draw the box by connecting vertices
+    // Bottom face
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    // Top face
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    // Connect top and bottom faces
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+    boxVertices.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+    tigl::drawVertices(GL_LINES, boxVertices);
+
+    // Render entities
     renderEntities();
 
     glDisable(GL_DEPTH_TEST);
 }
+
+
 
 void spawnParticles(float deltaTime)
 {
@@ -229,7 +293,11 @@ void spawnParticles(float deltaTime)
         particle->renderable->vertices = Util::buildCube(particle->transform->position, particle->transform->scale, glm::vec4(1, 0, 0, 1));
 
         particle->collider = std::make_unique<ColliderComponent>();
-        particle->collider->radius = 0.5f; // Adjust as needed
+
+        // Set bounding box for particle collider
+        float particleSize = 1.0f; // Adjust as needed
+        particle->collider->minBounds = particle->transform->position - glm::vec3(particleSize);
+        particle->collider->maxBounds = particle->transform->position + glm::vec3(particleSize);
 
         particle->lifetime = std::make_unique<LifetimeComponent>();
         particle->lifetime->lifetime = 10.0f; // Lifetime of 10 seconds
@@ -239,6 +307,7 @@ void spawnParticles(float deltaTime)
         spawnTimer = 0.0f;
     }
 }
+
 
 
 void moveEntities(float deltaTime)
@@ -272,8 +341,17 @@ void renderEntities()
     }
 }
 
-bool checkCollision(const Entity& a, const Entity& b)
-{
-    float distance = glm::length(a.transform->position - b.transform->position);
-    return distance < (a.collider->radius + b.collider->radius);
+bool checkCollision(const Entity& a, const Entity& b) {
+    // Check if both entities have colliders
+    if (!a.collider || !b.collider)
+        return false;
+
+    // Check for overlap along each axis
+    bool overlapX = (a.collider->minBounds.x <= b.collider->maxBounds.x && a.collider->maxBounds.x >= b.collider->minBounds.x);
+    bool overlapY = (a.collider->minBounds.y <= b.collider->maxBounds.y && a.collider->maxBounds.y >= b.collider->minBounds.y);
+    bool overlapZ = (a.collider->minBounds.z <= b.collider->maxBounds.z && a.collider->maxBounds.z >= b.collider->minBounds.z);
+
+    // If there's overlap along all axes, then there's a collision
+    return overlapX && overlapY && overlapZ;
 }
+

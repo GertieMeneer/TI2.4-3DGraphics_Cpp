@@ -23,6 +23,11 @@ glm::mat4 cam::getMatrix()
 	return ret;
 }
 
+glm::vec3 cam::getPosition() const
+{
+	return position;
+}
+
 void cam::move(float angle, float fac, float deltaTime) {
 	float velocity = fac * deltaTime;
 
@@ -38,7 +43,7 @@ void cam::update(GLFWwindow* window, float deltaTime)
 	int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
 	if (state == GLFW_PRESS)
 	{
-		
+
 	}
 
 	static double lastX = x;

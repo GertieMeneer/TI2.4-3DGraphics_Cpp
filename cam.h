@@ -10,6 +10,7 @@ public:
 
 	glm::mat4 getMatrix();
 	void update(GLFWwindow* window, float deltaTime);
+	glm::vec3 getPosition() const;
 
 private:
 	glm::vec3 position = glm::vec3(0, 0, 0);
