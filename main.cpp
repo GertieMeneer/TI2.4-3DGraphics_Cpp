@@ -222,19 +222,20 @@ void draw()
 void drawPlayerColliderBoundsBox()
 {
     // Get player's collider bounds
-    glm::vec3 minBounds = player->collider->minBounds + player->transform->position;
-    glm::vec3 maxBounds = player->collider->maxBounds + player->transform->position;
+    glm::vec3 minBounds = player->collider->minBounds;
+    glm::vec3 maxBounds = player->collider->maxBounds;
 
-    // Calculate the corners of the box
-    std::vector<glm::vec3> corners;
-    corners.push_back(glm::vec3(minBounds.x, minBounds.y, minBounds.z));
-    corners.push_back(glm::vec3(maxBounds.x, minBounds.y, minBounds.z));
-    corners.push_back(glm::vec3(minBounds.x, maxBounds.y, minBounds.z));
-    corners.push_back(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z));
-    corners.push_back(glm::vec3(minBounds.x, minBounds.y, maxBounds.z));
-    corners.push_back(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z));
-    corners.push_back(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z));
-    corners.push_back(glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z));
+    // Calculate the corners of the box relative to the player's position
+    glm::vec3 corners[8] = {
+        player->transform->position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
+        player->transform->position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+        player->transform->position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+        player->transform->position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+        player->transform->position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+        player->transform->position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+        player->transform->position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
+        player->transform->position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+    };
 
     // Apply camera's view matrix
     glm::mat4 viewMatrix = camera->getMatrix();
@@ -243,52 +244,27 @@ void drawPlayerColliderBoundsBox()
     glBegin(GL_LINES);
     glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
 
-    for (const auto& corner : corners)
+    // Draw lines between corners to form the edges of the box
+    for (int i = 0; i < 4; ++i)
     {
-        glm::vec4 transformedCorner = viewMatrix * glm::vec4(corner, 1.0f);
-        glVertex3f(transformedCorner.x, transformedCorner.y, transformedCorner.z);
+        // Bottom face
+        glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+        glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
+
+        // Top face
+        glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
+        glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
+
+        // Connections between top and bottom faces
+        glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+        glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
     }
 
-    // Bottom face
-    glVertex3f(corners[0].x, corners[0].y, corners[0].z);
-    glVertex3f(corners[1].x, corners[1].y, corners[1].z);
-
-    glVertex3f(corners[1].x, corners[1].y, corners[1].z);
-    glVertex3f(corners[3].x, corners[3].y, corners[3].z);
-
-    glVertex3f(corners[3].x, corners[3].y, corners[3].z);
-    glVertex3f(corners[2].x, corners[2].y, corners[2].z);
-
-    glVertex3f(corners[2].x, corners[2].y, corners[2].z);
-    glVertex3f(corners[0].x, corners[0].y, corners[0].z);
-
-    // Top face
-    glVertex3f(corners[4].x, corners[4].y, corners[4].z);
-    glVertex3f(corners[5].x, corners[5].y, corners[5].z);
-
-    glVertex3f(corners[5].x, corners[5].y, corners[5].z);
-    glVertex3f(corners[7].x, corners[7].y, corners[7].z);
-
-    glVertex3f(corners[7].x, corners[7].y, corners[7].z);
-    glVertex3f(corners[6].x, corners[6].y, corners[6].z);
-
-    glVertex3f(corners[6].x, corners[6].y, corners[6].z);
-    glVertex3f(corners[4].x, corners[4].y, corners[4].z);
-
-    // Connections between top and bottom faces
-    glVertex3f(corners[0].x, corners[0].y, corners[0].z);
-    glVertex3f(corners[4].x, corners[4].y, corners[4].z);
-
-    glVertex3f(corners[1].x, corners[1].y, corners[1].z);
-    glVertex3f(corners[5].x, corners[5].y, corners[5].z);
-
-    glVertex3f(corners[2].x, corners[2].y, corners[2].z);
-    glVertex3f(corners[6].x, corners[6].y, corners[6].z);
-
-    glVertex3f(corners[3].x, corners[3].y, corners[3].z);
-    glVertex3f(corners[7].x, corners[7].y, corners[7].z);
     glEnd();
 }
+
+
+
 
 void renderFloor()
 {
