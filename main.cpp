@@ -214,8 +214,16 @@ void spawnParticles(float deltaTime)
         auto particle = std::make_unique<Entity>();
         particle->transform->position = glm::vec3(x, y, z);
         particle->transform->scale = glm::vec3(0.5f);
+
+        // Generate random direction components
+        float randomX = distribution(generator);
+        float randomY = distribution(generator);
+        float randomZ = distribution(generator);
+
+        glm::vec3 direction = glm::normalize(glm::vec3(randomX, randomY, randomZ) - particle->transform->position);
+
         particle->velocity = std::make_unique<VelocityComponent>();
-        particle->velocity->velocity = glm::vec3(0, 0, 2.0f); // Move towards the player
+        particle->velocity->velocity = direction * 2.0f; // Adjust speed as needed
 
         particle->renderable = std::make_unique<RenderableComponent>();
         particle->renderable->vertices = Util::buildCube(particle->transform->position, particle->transform->scale, glm::vec4(1, 0, 0, 1));
@@ -231,6 +239,7 @@ void spawnParticles(float deltaTime)
         spawnTimer = 0.0f;
     }
 }
+
 
 void moveEntities(float deltaTime)
 {
