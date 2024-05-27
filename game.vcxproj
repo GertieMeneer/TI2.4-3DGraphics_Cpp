@@ -130,23 +130,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BoudingBoxComponent.cpp" />
     <ClCompile Include="cam.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ColliderComponent.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="LifetimeComponent.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ParticleComponent.cpp" />
+    <ClCompile Include="RenderableComponent.cpp" />
     <ClCompile Include="tigl.cpp" />
-    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="util.cpp" />
+    <ClCompile Include="VelocityComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoundingBoxComponent.h" />
-    <ClInclude Include="cam.h" />
-    <ClInclude Include="Component.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="ParticleComponent.h" />
+    <ClInclude Include="Cam.h" />
+    <ClInclude Include="ColliderComponent.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="LifetimeComponent.h" />
+    <ClInclude Include="RenderableComponent.h" />
     <ClInclude Include="tigl.h" />
+    <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Util.h" />
+    <ClInclude Include="VelocityComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

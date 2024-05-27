@@ -1,6 +1,12 @@
 #include "tigl.h"
 #include "cam.h"
 #include "Util.h"
+#include "Entity.h"
+#include "TransformComponent.h"
+#include "VelocityComponent.h"
+#include "RenderableComponent.h"
+#include "ColliderComponent.h"
+#include "LifetimeComponent.h"
 
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
@@ -20,47 +26,6 @@ using tigl::Vertex;
 GLFWwindow* window;
 cam* camera;
 
-// ECS Components
-struct TransformComponent {
-    glm::vec3 position;
-    glm::vec3 scale;
-};
-
-struct VelocityComponent {
-    glm::vec3 velocity;
-};
-
-struct RenderableComponent {
-    std::vector<Vertex> vertices;
-};
-
-struct ColliderComponent {
-    glm::vec3 minBounds; // Minimum coordinates of the bounding box
-    glm::vec3 maxBounds; // Maximum coordinates of the bounding box
-};
-
-struct LifetimeComponent {
-    float lifetime;
-    std::chrono::steady_clock::time_point spawnTime; // Time when the particle was spawned
-};
-
-// Entity
-class Entity {
-public:
-    std::unique_ptr<TransformComponent> transform;
-    std::unique_ptr<VelocityComponent> velocity;
-    std::unique_ptr<RenderableComponent> renderable;
-    std::unique_ptr<ColliderComponent> collider;
-    std::unique_ptr<LifetimeComponent> lifetime;
-
-    Entity() :
-        transform(std::make_unique<TransformComponent>()),
-        velocity(nullptr),
-        renderable(nullptr),
-        collider(nullptr),
-        lifetime(nullptr) {}
-};
-
 // System Prototypes
 void init();
 void update(float deltaTime);
@@ -69,7 +34,6 @@ void spawnParticles(float deltaTime);
 void moveEntities(float deltaTime);
 void renderEntities();
 bool checkCollision(const Entity& a, const Entity& b);
-void drawPlayerColliderBoundsBox();
 void drawParticleColliderBoundsBox();
 void renderFloor();
 
@@ -209,7 +173,7 @@ void draw()
     glEnable(GL_DEPTH_TEST);
 
     // Render hit zone around the player
-    drawPlayerColliderBoundsBox();
+    Util::drawPlayerColliderBoundsBox(player, camera);
 
     // Render collider boxes around particles
     drawParticleColliderBoundsBox();
@@ -224,49 +188,7 @@ void draw()
 }
 
 
-void drawPlayerColliderBoundsBox()
-{
-    // Get player's collider bounds
-    glm::vec3 minBounds = player->collider->minBounds;
-    glm::vec3 maxBounds = player->collider->maxBounds;
 
-    // Calculate the corners of the box relative to the player's position
-    glm::vec3 corners[8] = {
-        player->transform->position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
-        player->transform->position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-        player->transform->position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-        player->transform->position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-        player->transform->position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-        player->transform->position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-        player->transform->position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
-        player->transform->position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
-    };
-
-    // Apply camera's view matrix
-    glm::mat4 viewMatrix = camera->getMatrix();
-
-    // Draw the box using GL_LINES
-    glBegin(GL_LINES);
-    glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
-
-    // Draw lines between corners to form the edges of the box
-    for (int i = 0; i < 4; ++i)
-    {
-        // Bottom face
-        glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-        glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
-
-        // Top face
-        glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-        glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
-
-        // Connections between top and bottom faces
-        glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-        glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-    }
-
-    glEnd();
-}
 
 void drawParticleColliderBoundsBox()
 {
