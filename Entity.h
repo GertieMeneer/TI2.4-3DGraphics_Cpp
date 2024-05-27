@@ -11,7 +11,7 @@
 
 class Entity {
 public:
-    std::unique_ptr<TransformComponent> transform;
+    TransformComponent transform;
     std::unique_ptr<VelocityComponent> velocity;
     std::unique_ptr<RenderableComponent> renderable;
     std::unique_ptr<ColliderComponent> collider;

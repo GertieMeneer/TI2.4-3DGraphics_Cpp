@@ -2,7 +2,7 @@
 
 Entity::Entity() :
 
-    transform(std::make_unique<TransformComponent>()),
+    transform(TransformComponent()),
     velocity(nullptr),
     renderable(nullptr),
     collider(nullptr),

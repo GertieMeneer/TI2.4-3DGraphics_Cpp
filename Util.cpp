@@ -122,14 +122,14 @@ void Util::drawPlayerColliderBoundsBox(Entity* player, cam* camera)
 
 	// Calculate the corners of the box relative to the player's position
 	glm::vec3 corners[8] = {
-		player->transform->position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
-		player->transform->position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-		player->transform->position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-		player->transform->position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-		player->transform->position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-		player->transform->position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-		player->transform->position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
-		player->transform->position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+		player->transform.position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
+		player->transform.position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+		player->transform.position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+		player->transform.position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+		player->transform.position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+		player->transform.position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+		player->transform.position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
+		player->transform.position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
 	};
 
 	// Apply camera's view matrix
@@ -172,14 +172,14 @@ void Util::drawParticleColliderBoundsBox(Entity* player, std::vector<std::unique
 
 			// Calculate the corners of the box relative to the particle's position
 			glm::vec3 corners[8] = {
-				entity->transform->position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
-				entity->transform->position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-				entity->transform->position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-				entity->transform->position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-				entity->transform->position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-				entity->transform->position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-				entity->transform->position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
-				entity->transform->position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+				entity->transform.position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
+				entity->transform.position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+				entity->transform.position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+				entity->transform.position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+				entity->transform.position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+				entity->transform.position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+				entity->transform.position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
+				entity->transform.position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
 			};
 
 			// Apply camera's view matrix

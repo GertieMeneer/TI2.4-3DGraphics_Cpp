@@ -96,31 +96,32 @@ void init()
 
     // Initialize player
     player = new Entity();
-    player->transform->position = glm::vec3(0, 0, 0);
+    player->transform.position = glm::vec3(0, 0, 0);
     player->collider = std::make_unique<ColliderComponent>();
 
     // Set bounding box for player collider
     float playerSize = 1.0f; // Adjust as needed
-    player->collider->minBounds = player->transform->position - glm::vec3(playerSize);
-    player->collider->maxBounds = player->transform->position + glm::vec3(playerSize);
+    player->collider->minBounds = glm::vec3(-playerSize / 2.0f);
+    player->collider->maxBounds = glm::vec3(playerSize / 2.0f);
 
     entities.push_back(std::unique_ptr<Entity>(player));
 
     floorEntity = new Entity();
-    floorEntity->transform->position = glm::vec3(0, -1, 0);
+    floorEntity->transform.position = glm::vec3(0, -1, 0);
     floorEntity->renderable = std::make_unique<RenderableComponent>();
     floorEntity->renderable->vertices = Util::buildFloor();
 
     entities.push_back(std::unique_ptr<Entity>(floorEntity));
+    std::cout << "Player collider bounds along Y-axis: (" << player->collider->minBounds.y << ", " << player->collider->maxBounds.y << ")" << std::endl;
 }
 
 void update(float deltaTime)
 {
     camera->update(window, deltaTime);
-    player->transform->position = camera->getPosition(); // Update player's position to match camera
+    player->transform.position = camera->getPosition(); // Update player's position to match camera
 
     // Debugging output
-    std::cout << "Player position: " << player->transform->position.x << ", " << player->transform->position.y << ", " << player->transform->position.z << std::endl;
+    //std::cout << "Player position: " << player->transform->position.x << ", " << player->transform->position.y << ", " << player->transform->position.z << std::endl;
 
     spawnParticles(deltaTime);
     moveEntities(deltaTime);
@@ -193,25 +194,27 @@ void draw()
 void drawParticleColliderBoundsBox()
 {
     // Loop through all entities and draw collider boxes for particles
-    for (const auto& entity : entities)
-    {
+    // In drawParticleColliderBoundsBox() function:
+
+// Loop through all entities and draw collider boxes for particles
+    for (const auto& entityPtr : entities) {
+        const Entity& entity = *entityPtr; // Dereference std::unique_ptr<Entity>
         // Check if the entity is a particle and has a collider
-        if (entity.get() != player && entity->collider)
-        {
+        if (&entity != player && entity.collider) {
             // Get particle's collider bounds
-            glm::vec3 minBounds = entity->collider->minBounds;
-            glm::vec3 maxBounds = entity->collider->maxBounds;
+            glm::vec3 minBounds = entity.collider->minBounds;
+            glm::vec3 maxBounds = entity.collider->maxBounds;
 
             // Calculate the corners of the box relative to the particle's position
             glm::vec3 corners[8] = {
-                entity->transform->position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
-                entity->transform->position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-                entity->transform->position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-                entity->transform->position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-                entity->transform->position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-                entity->transform->position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-                entity->transform->position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
-                entity->transform->position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+                entity.transform.position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
+                entity.transform.position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+                entity.transform.position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+                entity.transform.position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+                entity.transform.position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+                entity.transform.position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+                entity.transform.position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
+                entity.transform.position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
             };
 
             // Apply camera's view matrix
@@ -222,8 +225,7 @@ void drawParticleColliderBoundsBox()
             glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
 
             // Draw lines between corners to form the edges of the box
-            for (int i = 0; i < 4; ++i)
-            {
+            for (int i = 0; i < 4; ++i) {
                 // Bottom face
                 glVertex3f(corners[i].x, corners[i].y, corners[i].z);
                 glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
@@ -240,6 +242,7 @@ void drawParticleColliderBoundsBox()
             glEnd();
         }
     }
+
 }
 
 
@@ -265,8 +268,8 @@ void spawnParticles(float deltaTime)
         float z = distribution(generator);
 
         auto particle = std::make_unique<Entity>();
-        particle->transform->position = glm::vec3(x, 7.0f, z); // Start position at a height
-        particle->transform->scale = glm::vec3(0.5f);
+        particle->transform.position = glm::vec3(x, 7.0f, z); // Start position at a height
+        particle->transform.scale = glm::vec3(0.5f);
 
         // Set direction to move downwards
         glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);
@@ -275,14 +278,14 @@ void spawnParticles(float deltaTime)
         particle->velocity->velocity = direction * 10.0f; // Adjust speed as needed
 
         particle->renderable = std::make_unique<RenderableComponent>();
-        particle->renderable->vertices = Util::buildCube(particle->transform->position, particle->transform->scale, glm::vec4(1, 0, 0, 1));
+        particle->renderable->vertices = Util::buildCube(particle->transform.position, particle->transform.scale, glm::vec4(1, 0, 0, 1));
 
         particle->collider = std::make_unique<ColliderComponent>();
 
         // Set bounding box for particle collider
         float particleSize = 1.0f; // Adjust as needed
-        particle->collider->minBounds = particle->transform->position - glm::vec3(particleSize);
-        particle->collider->maxBounds = particle->transform->position + glm::vec3(particleSize);
+        particle->collider->minBounds = particle->transform.position - glm::vec3(particleSize);
+        particle->collider->maxBounds = particle->transform.position + glm::vec3(particleSize);
 
         particle->lifetime = std::make_unique<LifetimeComponent>();
         particle->lifetime->lifetime = 10.0f; // Lifetime of 10 seconds
@@ -293,13 +296,14 @@ void spawnParticles(float deltaTime)
     }
 }
 
+
 void moveEntities(float deltaTime)
 {
     for (auto& entity : entities)
     {
         if (entity->velocity)
         {
-            entity->transform->position += entity->velocity->velocity * deltaTime;
+            entity->transform.position += entity->velocity->velocity * deltaTime;
 
             // Update the vertices position for rendering
             if (entity->renderable)
@@ -312,6 +316,7 @@ void moveEntities(float deltaTime)
         }
     }
 }
+
 
 void renderEntities()
 {
@@ -330,10 +335,16 @@ bool checkCollision(const Entity& a, const Entity& b)
     if (!a.collider || !b.collider)
         return false;
 
+    // Convert collider bounds to global coordinates
+    glm::vec3 aMinBoundsGlobal = a.transform.position + a.collider->minBounds;
+    glm::vec3 aMaxBoundsGlobal = a.transform.position + a.collider->maxBounds;
+    glm::vec3 bMinBoundsGlobal = b.transform.position + b.collider->minBounds;
+    glm::vec3 bMaxBoundsGlobal = b.transform.position + b.collider->maxBounds;
+
     // Check for overlap along each axis
-    bool overlapX = (a.collider->minBounds.x <= b.collider->maxBounds.x && a.collider->maxBounds.x >= b.collider->minBounds.x);
-    bool overlapY = (a.collider->minBounds.y <= b.collider->maxBounds.y && a.collider->maxBounds.y >= b.collider->minBounds.y);
-    bool overlapZ = (a.collider->minBounds.z <= b.collider->maxBounds.z && a.collider->maxBounds.z >= b.collider->minBounds.z);
+    bool overlapX = (aMinBoundsGlobal.x <= bMaxBoundsGlobal.x && aMaxBoundsGlobal.x >= bMinBoundsGlobal.x);
+    bool overlapY = (aMinBoundsGlobal.y <= bMaxBoundsGlobal.y && aMaxBoundsGlobal.y >= bMinBoundsGlobal.y);
+    bool overlapZ = (aMinBoundsGlobal.z <= bMaxBoundsGlobal.z && aMaxBoundsGlobal.z >= bMinBoundsGlobal.z);
 
     // If there's overlap along all axes, then there's a collision
     return overlapX && overlapY && overlapZ;
