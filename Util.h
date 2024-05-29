@@ -15,6 +15,6 @@ public:
 	static std::vector<Vertex> buildFloor();
 	static std::vector<Vertex> buildHitbox(glm::vec3 minBounds, glm::vec3 maxBounds);
 	static void drawPlayerColliderBoundsBox(Entity* player, cam* camera);
-	static void drawParticleColliderBoundsBox(Entity* player, std::vector<std::unique_ptr<Entity>> entities, cam* camera);
+	static void drawParticleColliderBoundsBox(std::vector<std::unique_ptr<Entity>> entities, Entity* player);
 
 };
