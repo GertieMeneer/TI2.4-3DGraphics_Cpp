@@ -1,13 +1,15 @@
 #pragma once
 
-#ifndef TRANSFORM_COMPONENT_H
-#define TRANSFORM_COMPONENT_H
-
 #include <glm/vec3.hpp>
 
 struct TransformComponent {
     glm::vec3 position;
     glm::vec3 scale;
-};
 
-#endif // TRANSFORM_COMPONENT_H
+    // Default constructor (compiler-generated)
+    TransformComponent() = default;
+
+    // Constructor to initialize position and scale
+    TransformComponent(const glm::vec3& position_, const glm::vec3& scale_)
+        : position(position_), scale(scale_) {}
+};

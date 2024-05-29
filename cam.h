@@ -1,5 +1,4 @@
-#ifndef CAM_H
-#define CAM_H
+#pragma once
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -18,5 +17,3 @@ private:
 
     void move(float angle, float fac, float deltaTime);
 };
-
-#endif

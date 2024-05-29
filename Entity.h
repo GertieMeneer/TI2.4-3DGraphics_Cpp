@@ -1,6 +1,4 @@
 #pragma once
-#ifndef ENTITY_H
-#define ENTITY_H
 
 #include "TransformComponent.h"
 #include "VelocityComponent.h"
@@ -19,5 +17,3 @@ public:
 
     Entity();
 };
-
-#endif // ENTITY_H

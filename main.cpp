@@ -28,7 +28,7 @@ using tigl::Vertex;
 
 // globals
 GLFWwindow* window;
-cam* camera;
+std::unique_ptr<cam> camera;
 
 std::vector<std::unique_ptr<Entity>> entities;		// list of entities
 Entity* player;
@@ -109,7 +109,7 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 
 	// init cam
-	camera = new cam(window);
+	camera = std::make_unique<cam>(window);
 
 	// init player
 	player = new Entity();
@@ -166,12 +166,11 @@ void update(float deltaTime)
 	{
 		if ((*it)->lifetime)
 		{
-			auto spawnTime = (*it)->lifetime->spawnTime;
-			auto duration = std::chrono::duration_cast<std::chrono::seconds>(currentTime - spawnTime);
+			auto duration = std::chrono::duration_cast<std::chrono::seconds>(currentTime - (*it)->lifetime->spawnTime);
 			auto timeAlive = duration.count();
 			if (timeAlive >= (*it)->lifetime->lifetime)
 			{
-				it = entities.erase(it); // remove particle
+				it = entities.erase(it);  // remove particle
 				continue;
 			}
 		}
