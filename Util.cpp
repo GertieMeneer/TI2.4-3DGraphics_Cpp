@@ -70,50 +70,6 @@ std::vector<Vertex> Util::buildFloor() {
 	return verts;
 }
 
-std::vector<Vertex> Util::buildHitbox(glm::vec3 minBounds, glm::vec3 maxBounds) {
-	std::vector<Vertex> verts;
-
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	// Top face
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	// Connect top and bottom faces
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
-
-	return verts;
-}
-
 void Util::drawPlayerColliderBoundsBox(Entity* player, cam* camera)
 {
 	// Get player's collider bounds
@@ -158,7 +114,7 @@ void Util::drawPlayerColliderBoundsBox(Entity* player, cam* camera)
 	glEnd();
 }
 
-void Util::drawParticleColliderBoundsBox(std::vector<std::unique_ptr<Entity>> entities, Entity* player)
+void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities, const Entity* player)
 {
 	for (const auto& entityPtr : entities) {
 		const Entity& entity = *entityPtr;
