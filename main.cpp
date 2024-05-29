@@ -177,7 +177,7 @@ void draw()
     Util::drawPlayerColliderBoundsBox(player, camera);
 
     // Render collider boxes around particles
-    drawParticleColliderBoundsBox();
+    //drawParticleColliderBoundsBox();
 
     // Render the floor
     renderFloor();
@@ -193,32 +193,24 @@ void draw()
 
 void drawParticleColliderBoundsBox()
 {
-    // Loop through all entities and draw collider boxes for particles
-    // In drawParticleColliderBoundsBox() function:
-
-// Loop through all entities and draw collider boxes for particles
     for (const auto& entityPtr : entities) {
         const Entity& entity = *entityPtr; // Dereference std::unique_ptr<Entity>
-        // Check if the entity is a particle and has a collider
         if (&entity != player && entity.collider) {
             // Get particle's collider bounds
-            glm::vec3 minBounds = entity.collider->minBounds;
-            glm::vec3 maxBounds = entity.collider->maxBounds;
+            glm::vec3 minBounds = entity.collider->minBounds + entity.transform.position;
+            glm::vec3 maxBounds = entity.collider->maxBounds + entity.transform.position;
 
             // Calculate the corners of the box relative to the particle's position
             glm::vec3 corners[8] = {
-                entity.transform.position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
-                entity.transform.position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-                entity.transform.position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-                entity.transform.position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-                entity.transform.position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-                entity.transform.position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-                entity.transform.position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
-                entity.transform.position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+                minBounds,
+                glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+                glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+                glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+                glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+                glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+                maxBounds,
+                glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
             };
-
-            // Apply camera's view matrix
-            glm::mat4 viewMatrix = camera->getMatrix();
 
             // Draw the box using GL_LINES
             glBegin(GL_LINES);
@@ -242,8 +234,8 @@ void drawParticleColliderBoundsBox()
             glEnd();
         }
     }
-
 }
+
 
 
 
@@ -259,7 +251,7 @@ void renderFloor()
 
 void spawnParticles(float deltaTime)
 {
-    // Spawn a particle every 2 seconds
+    // Spawn a particle every 0.5 seconds
     static float spawnTimer = 0.0f;
     spawnTimer += deltaTime;
     if (spawnTimer >= 0.5f) // Adjust spawn rate as needed
@@ -283,9 +275,9 @@ void spawnParticles(float deltaTime)
         particle->collider = std::make_unique<ColliderComponent>();
 
         // Set bounding box for particle collider
-        float particleSize = 1.0f; // Adjust as needed
-        particle->collider->minBounds = particle->transform.position - glm::vec3(particleSize);
-        particle->collider->maxBounds = particle->transform.position + glm::vec3(particleSize);
+        float particleSize = 0.5f; // Should match particle scale
+        particle->collider->minBounds = glm::vec3(-particleSize);
+        particle->collider->maxBounds = glm::vec3(particleSize);
 
         particle->lifetime = std::make_unique<LifetimeComponent>();
         particle->lifetime->lifetime = 10.0f; // Lifetime of 10 seconds
@@ -295,6 +287,7 @@ void spawnParticles(float deltaTime)
         spawnTimer = 0.0f;
     }
 }
+
 
 
 void moveEntities(float deltaTime)
