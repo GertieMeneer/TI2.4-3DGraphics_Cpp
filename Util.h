@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <vector>
+#include <iostream>
+
 #include "tigl.h"
 #include "Entity.h"
 #include "Cam.h"
@@ -15,5 +16,5 @@ public:
 	static std::vector<Vertex> buildFloor();
 	static void drawPlayerColliderBoundsBox(Entity* player, cam* camera);
 	static void drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities, const Entity* player);
-
+	static void SaveScore(std::chrono::steady_clock::time_point start, std::chrono::steady_clock::time_point end, std::string reason);
 };

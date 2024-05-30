@@ -22,6 +22,7 @@
 #include <memory>
 #include <random>
 #include <chrono>
+#include <fstream>
 
 // usings
 using tigl::Vertex;
@@ -29,6 +30,8 @@ using tigl::Vertex;
 // globals
 GLFWwindow* window;
 std::unique_ptr<cam> camera;
+std::chrono::steady_clock::time_point startTime;
+std::chrono::steady_clock::time_point endTime;
 
 std::vector<std::unique_ptr<Entity>> entities;		// list of entities
 Entity* player;
@@ -70,6 +73,8 @@ int main(void)
 	tigl::init();
 	init();
 
+	startTime = std::chrono::steady_clock::now(); // Record start time
+
 	float lastTime = (float)glfwGetTime();
 
 	while (!glfwWindowShouldClose(window))
@@ -101,8 +106,12 @@ void init()
 	// add esc key callback to close window
 	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
-			if (key == GLFW_KEY_ESCAPE)
+			if (key == GLFW_KEY_ESCAPE) {
+				endTime = std::chrono::steady_clock::now();
+				Util::SaveScore(startTime, endTime, "pressed esc key");
 				glfwSetWindowShouldClose(window, true);
+			}
+				
 		});
 
 	// enable depth
@@ -155,6 +164,8 @@ void update(float deltaTime)
 		if (entity.get() != player && entity->collider && checkCollision(*player, *entity))
 		{
 			std::cout << "Collision detected! Game Over!" << std::endl;
+			endTime = std::chrono::steady_clock::now();
+			Util::SaveScore(startTime, endTime, "collision with block");
 			glfwSetWindowShouldClose(window, true);
 		}
 	}
