@@ -135,7 +135,6 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="LifetimeComponent.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RenderableComponent.cpp" />
     <ClCompile Include="tigl.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="util.cpp" />
@@ -146,7 +145,6 @@
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="LifetimeComponent.h" />
-    <ClInclude Include="RenderableComponent.h" />
     <ClInclude Include="tigl.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="Util.h" />
