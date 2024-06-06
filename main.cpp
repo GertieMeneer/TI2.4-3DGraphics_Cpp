@@ -9,7 +9,6 @@
 #include "Entity.h"
 #include "TransformComponent.h"
 #include "VelocityComponent.h"
-#include "RenderableComponent.h"
 #include "ColliderComponent.h"
 #include "LifetimeComponent.h"
 
@@ -111,7 +110,7 @@ void init()
 				Util::SaveScore(startTime, endTime, "pressed esc key");
 				glfwSetWindowShouldClose(window, true);
 			}
-				
+
 		});
 
 	// enable depth
@@ -135,8 +134,7 @@ void init()
 	// init floor
 	floorEntity = new Entity();
 	floorEntity->transform.position = glm::vec3(0, 0, 0); // set floor position
-	floorEntity->renderable = std::make_unique<RenderableComponent>(); // add renderable component
-	floorEntity->renderable->vertices = Util::buildFloor(); // add floor vertices to renderable component
+	floorEntity->vertices = Util::buildFloor(); // add floor vertices to renderable component
 
 	entities.push_back(std::unique_ptr<Entity>(floorEntity)); // move floor to entities list
 }
@@ -216,10 +214,7 @@ void draw()
 	// draw entities
 	for (auto& entity : entities)
 	{
-		if (entity->renderable)
-		{
-			tigl::drawVertices(GL_QUADS, entity->renderable->vertices);
-		}
+		tigl::drawVertices(GL_QUADS, entity->vertices);
 	}
 }
 
@@ -253,8 +248,7 @@ void spawnParticles(float deltaTime)
 		particle->velocity = std::make_unique<VelocityComponent>();		// add velocity component
 		particle->velocity->velocity = direction * particleSpeed;		// set particle speed
 
-		particle->renderable = std::make_unique<RenderableComponent>();	// add renderable component
-		particle->renderable->vertices = Util::buildCube(particle->transform.position, particle->transform.scale, glm::vec4(1, 0, 0, 1));	// add cube vertices to particle
+		particle->vertices = Util::buildCube(particle->transform.position, particle->transform.scale, glm::vec4(1, 0, 0, 1));	// add cube vertices to particle
 
 		particle->collider = std::make_unique<ColliderComponent>();		// add collider component
 
@@ -284,12 +278,9 @@ void moveEntities(float deltaTime)
 			entity->transform.position += entity->velocity->velocity * deltaTime;
 
 			// update vertices position for rendering
-			if (entity->renderable)
+			for (auto& vertex : entity->vertices)
 			{
-				for (auto& vertex : entity->renderable->vertices)
-				{
-					vertex.position += entity->velocity->velocity * deltaTime;
-				}
+				vertex.position += entity->velocity->velocity * deltaTime;
 			}
 		}
 	}

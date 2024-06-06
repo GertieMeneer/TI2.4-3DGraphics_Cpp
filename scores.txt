@@ -1,0 +1,6 @@
+Thu Jun  6 20:10:14 2024: 3 seconds
+Reason of death: collision with block
+
+Thu Jun  6 20:10:20 2024: 2 seconds
+Reason of death: collision with block
+
