@@ -1,7 +1,11 @@
 #pragma once
+#include "Entity.h"
+#include "cam.h"
 
 class Component {
 public:
-    virtual ~Component() {}
-    virtual void update(float deltaTime) = 0;
+	Component();
+	~Component();
+
+	virtual void update(float deltaTime, Entity &entity, cam &camera) {};
 };
