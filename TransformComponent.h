@@ -1,15 +1,14 @@
 #pragma once
 
 #include <glm/vec3.hpp>
+#include "Component.h"
 
-struct TransformComponent {
+class TransformComponent : public Component {
     glm::vec3 position;
     glm::vec3 scale;
 
-    // Default constructor (compiler-generated)
-    TransformComponent() = default;
+    TransformComponent(const glm::vec3& position, const glm::vec3& scale);
+    ~TransformComponent();
 
-    // Constructor to initialize position and scale
-    TransformComponent(const glm::vec3& position_, const glm::vec3& scale_)
-        : position(position_), scale(scale_) {}
+    virtual void update(float elapsedTime) override;
 };

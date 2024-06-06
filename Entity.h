@@ -4,20 +4,28 @@
 #include "VelocityComponent.h"
 #include "ColliderComponent.h"
 #include "LifetimeComponent.h"
+#include "Component.h"
 #include "tigl.h"
+#include "cam.h"
 #include <memory>
 #include <vector>
+#include <list>
 
-class Entity {
+using tigl::Vertex;
+
+class Entity : public Component {
 public:
-    TransformComponent transform;
-    std::unique_ptr<VelocityComponent> velocity;
-    std::unique_ptr<ColliderComponent> collider;
-    std::unique_ptr<LifetimeComponent> lifetime;
-    std::vector<tigl::Vertex> vertices;
+    glm::vec3 position;
 
     Entity();
+    ~Entity();
 
-    void update();
+    void addComponent(Component* component);
+    virtual void update(float deltaTime, Entity &entity, cam &camera) override;
+    void draw();
+
+private:
+    std::vector<Vertex> vertices;
+    std::list<Component*> components;
 
 };

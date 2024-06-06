@@ -11,6 +11,7 @@
 #include "VelocityComponent.h"
 #include "ColliderComponent.h"
 #include "LifetimeComponent.h"
+#include "PlayerComponent.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
@@ -34,7 +35,6 @@ std::chrono::steady_clock::time_point endTime;
 
 std::vector<std::unique_ptr<Entity>> entities;		// list of entities
 Entity* player;
-Entity* floorEntity;
 
 std::uniform_real_distribution<float> distribution(-5.0f, 5.0f);		// random float in range
 std::default_random_engine generator;		// generator for random float
@@ -121,22 +121,14 @@ void init()
 
 	// init player
 	player = new Entity();
-	player->transform.position = glm::vec3(0, 1, 0); // set player position
-	player->collider = std::make_unique<ColliderComponent>(); // add collider component
-
-	// set bounding box player collider
-	float playerSize = 1.0f;
-	player->collider->minBounds = glm::vec3(-playerSize / 2.0f);
-	player->collider->maxBounds = glm::vec3(playerSize / 2.0f);
+	player->position = glm::vec3(0, 1, 0);
+	player->addComponent(new PlayerComponent());
+	player->addComponent(new ColliderComponent(glm::vec3(-0.5f), glm::vec3(0.5f)));
 
 	entities.push_back(std::unique_ptr<Entity>(player)); // move player to entities list
 
 	// init floor
-	floorEntity = new Entity();
-	floorEntity->transform.position = glm::vec3(0, 0, 0); // set floor position
-	floorEntity->vertices = Util::buildFloor(); // add floor vertices to renderable component
-
-	entities.push_back(std::unique_ptr<Entity>(floorEntity)); // move floor to entities list
+	tigl::drawVertices(GL_QUADS, Util::buildFloor());
 }
 
 /// <summary>
@@ -148,7 +140,9 @@ void init()
 void update(float deltaTime)
 {
 	camera->update(window, deltaTime);		// update cam
-	player->transform.position = camera->getPosition(); // player position to cam position
+	for (auto &entity : entities) {
+		entity->update(deltaTime, camera);
+	}
 
 	// print player position
 	//std::cout << "Player position: " << player->transform->position.x << ", " << player->transform->position.y << ", " << player->transform->position.z << std::endl;

@@ -1,14 +1,25 @@
 #include "Entity.h"
 
+Entity::Entity() 
+{
+	//
+}
 
+Entity::~Entity()
+{
+	//
+}
 
-Entity::Entity() :
+void Entity::addComponent(Component* component) {
+	components.push_back(component);
+}
 
-    transform(TransformComponent()),
-    velocity(nullptr),
-    collider(nullptr),
-    lifetime(nullptr) {}
+void Entity::update(float deltaTime, Entity &entity, cam &camera) {
+	for (auto &c : components) {
+		c->update(deltaTime, entity, camera)
+	}
+}
 
-void Entity::update() {
-
+void Entity::draw() {
+	tigl::drawVertices(GL_QUADS, vertices);
 }

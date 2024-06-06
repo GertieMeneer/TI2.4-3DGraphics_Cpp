@@ -1,15 +1,16 @@
 #pragma once
 
 #include <glm/vec3.hpp>
+#include "Component.h"
 
-struct ColliderComponent {
+class ColliderComponent : public Component {
+public:
     glm::vec3 minBounds;
     glm::vec3 maxBounds;
 
-    // Default constructor (compiler-generated)
-    ColliderComponent() = default;
+    ColliderComponent(glm::vec3 minBounds, glm::vec3 maxBounds);
+    ~ColliderComponent();
 
-    // Constructor to initialize min and max bounds
-    ColliderComponent(const glm::vec3& minBounds_, const glm::vec3& maxBounds_)
-        : minBounds(minBounds_), maxBounds(maxBounds_) {}
+    virtual void update(float elapsedTime) override;
+
 };
