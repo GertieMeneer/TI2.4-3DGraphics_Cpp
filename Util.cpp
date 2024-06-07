@@ -5,7 +5,7 @@
 #include <ctime>
 
 #include "Util.h"
-#include "Entity.h"
+//#include "Entity.h"
 #include "Cam.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -75,94 +75,94 @@ std::vector<Vertex> Util::buildFloor() {
 	return verts;
 }
 
-void Util::drawPlayerColliderBoundsBox(Entity* player, cam* camera)
-{
-	// Get player's collider bounds
-	glm::vec3 minBounds = player->collider->minBounds;
-	glm::vec3 maxBounds = player->collider->maxBounds;
+//void Util::drawPlayerColliderBoundsBox(Entity* player, cam* camera)
+//{
+	//// Get player's collider bounds
+	//glm::vec3 minBounds = player->collider->minBounds;
+	//glm::vec3 maxBounds = player->collider->maxBounds;
 
-	// Calculate the corners of the box relative to the player's position
-	glm::vec3 corners[8] = {
-		player->transform.position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
-		player->transform.position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-		player->transform.position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-		player->transform.position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-		player->transform.position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-		player->transform.position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-		player->transform.position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
-		player->transform.position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
-	};
+	//// Calculate the corners of the box relative to the player's position
+	//glm::vec3 corners[8] = {
+	//	player->transform.position + glm::vec3(minBounds.x, minBounds.y, minBounds.z),
+	//	player->transform.position + glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+	//	player->transform.position + glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+	//	player->transform.position + glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+	//	player->transform.position + glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+	//	player->transform.position + glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+	//	player->transform.position + glm::vec3(maxBounds.x, maxBounds.y, maxBounds.z),
+	//	player->transform.position + glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+	//};
 
-	// Apply camera's view matrix
-	glm::mat4 viewMatrix = camera->getMatrix();
+	//// Apply camera's view matrix
+	//glm::mat4 viewMatrix = camera->getMatrix();
 
-	// Draw the box using GL_LINES
-	glBegin(GL_LINES);
-	glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
+	//// Draw the box using GL_LINES
+	//glBegin(GL_LINES);
+	//glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
 
-	// Draw lines between corners to form the edges of the box
-	for (int i = 0; i < 4; ++i)
-	{
-		// Bottom face
-		glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-		glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
+	//// Draw lines between corners to form the edges of the box
+	//for (int i = 0; i < 4; ++i)
+	//{
+	//	// Bottom face
+	//	glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+	//	glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
 
-		// Top face
-		glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-		glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
+	//	// Top face
+	//	glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
+	//	glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
 
-		// Connections between top and bottom faces
-		glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-		glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-	}
+	//	// Connections between top and bottom faces
+	//	glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+	//	glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
+	//}
 
-	glEnd();
-}
+	//glEnd();
+//}
 
-void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities, const Entity* player)
-{
-	for (const auto& entityPtr : entities) {
-		const Entity& entity = *entityPtr;
-		if (&entity != player && entity.collider) {
-			// Get particle's collider bounds
-			glm::vec3 minBounds = entity.collider->minBounds + entity.transform.position;
-			glm::vec3 maxBounds = entity.collider->maxBounds + entity.transform.position;
+//void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities, const Entity* player)
+//{
+	//for (const auto& entityPtr : entities) {
+	//	const Entity& entity = *entityPtr;
+	//	if (&entity != player && entity.collider) {
+	//		// Get particle's collider bounds
+	//		glm::vec3 minBounds = entity.collider->minBounds + entity.transform.position;
+	//		glm::vec3 maxBounds = entity.collider->maxBounds + entity.transform.position;
 
-			// Calculate the corners of the box relative to the particle's position
-			glm::vec3 corners[8] = {
-				minBounds,
-				glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-				glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-				glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-				glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-				glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-				maxBounds,
-				glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
-			};
+	//		// Calculate the corners of the box relative to the particle's position
+	//		glm::vec3 corners[8] = {
+	//			minBounds,
+	//			glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
+	//			glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
+	//			glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
+	//			glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
+	//			glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
+	//			maxBounds,
+	//			glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
+	//		};
 
-			// Draw the box using GL_LINES
-			glBegin(GL_LINES);
-			glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
+	//		// Draw the box using GL_LINES
+	//		glBegin(GL_LINES);
+	//		glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
 
-			// Draw lines between corners to form the edges of the box
-			for (int i = 0; i < 4; ++i) {
-				// Bottom face
-				glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-				glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
+	//		// Draw lines between corners to form the edges of the box
+	//		for (int i = 0; i < 4; ++i) {
+	//			// Bottom face
+	//			glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+	//			glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
 
-				// Top face
-				glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-				glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
+	//			// Top face
+	//			glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
+	//			glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
 
-				// Connections between top and bottom faces
-				glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-				glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-			}
+	//			// Connections between top and bottom faces
+	//			glVertex3f(corners[i].x, corners[i].y, corners[i].z);
+	//			glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
+	//		}
 
-			glEnd();
-		}
-	}
-}
+	//		glEnd();
+	//	}
+	//}
+//}
 
 void Util::SaveScore(std::chrono::steady_clock::time_point start, std::chrono::steady_clock::time_point end, std::string reason) {
 	auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);

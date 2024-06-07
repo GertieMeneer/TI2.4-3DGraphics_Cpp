@@ -13,7 +13,7 @@ namespace tigl
 		{
 		public:
 			virtual ~Shader() {};
-
+			
 			// Sets the projection matrix
 			virtual void setProjectionMatrix(const glm::mat4& matrix) = 0;
 
@@ -28,7 +28,7 @@ namespace tigl
 
 			// enables the use of texture coordinats set in vertices, and uses textures set in texture sampler
 			virtual void enableTexture(bool enabled) = 0;
-
+			
 			// enables the lighting
 			virtual void enableLighting(bool enabled) = 0;
 
@@ -105,9 +105,10 @@ namespace tigl
 		}
 
 		// Creates a vertex with a position, a texture coordinat and a color
-		static Vertex PTC(const glm::vec3& position, const glm::vec2& texcoord, const glm::vec4& color) {
+		static Vertex PTC(const glm::vec3& position, const glm::vec2& texcoord, const glm::vec4 &color) {
 			return { position, glm::vec3(0,1,0), color, texcoord };
 		}
+
 
 		// Creates a vertex with a position, color and normal
 		static Vertex PCN(const glm::vec3& position, const glm::vec4& color, const glm::vec3& normal) {
@@ -140,5 +141,8 @@ namespace tigl
 	void end();
 
 	// Draws a full array of vertices
-	void drawVertices(GLenum shape, const std::vector<Vertex>& vertices);
+	void drawVertices(GLenum shape, const std::vector<Vertex> &vertices);
 }
+
+
+

@@ -1,17 +1,11 @@
 #include "VelocityComponent.h"
-// No implementation needed
 
-VelocityComponent::VelocityComponent()
+VelocityComponent::VelocityComponent(glm::vec3 velocity)
 {
-	//
+	this->velocity = velocity;
 }
 
 VelocityComponent::~VelocityComponent()
 {
-	//
-}
 
-void VelocityComponent::update(float elapsedTime)
-{
-	//
 }

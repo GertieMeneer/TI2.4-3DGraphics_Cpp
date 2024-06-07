@@ -1,5 +1,5 @@
 #include "ColliderComponent.h"
-// No implementation needed
+
 
 ColliderComponent::ColliderComponent(glm::vec3 minBounds, glm::vec3 maxBounds)
 {
@@ -8,7 +8,3 @@ ColliderComponent::ColliderComponent(glm::vec3 minBounds, glm::vec3 maxBounds)
 }
 
 ColliderComponent::~ColliderComponent() {}
-
-void ColliderComponent::update(float elapsedTime) {
-
-}

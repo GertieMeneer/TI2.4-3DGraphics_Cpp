@@ -1,6 +1,5 @@
 #include "cam.h"
-
-#include <GLFW/glfw3.h>
+#include "gl_includes.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 

@@ -1,6 +1,4 @@
 #include "LifetimeComponent.h"
-// No implementation needed
-
 
 LifetimeComponent::LifetimeComponent(float lifetime, const std::chrono::steady_clock::time_point& spawnTime) 
 {
@@ -10,6 +8,11 @@ LifetimeComponent::LifetimeComponent(float lifetime, const std::chrono::steady_c
 
 LifetimeComponent::~LifetimeComponent() {}
 
-void LifetimeComponent::update(float elapsedTime) {
-
+void LifetimeComponent::update(float deltaTime) {
+	auto currentTime = std::chrono::steady_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::seconds>(currentTime - spawnTime);
+	auto timeAlive = duration.count();
+	if (timeAlive >= lifetime) {
+		toBeRemoved = true;
+	}
 }

@@ -1,12 +1,15 @@
 #pragma once
 
 #include "Component.h"
-#include "Entity.h"
+#include "cam.h"
 
 class PlayerComponent : public Component {
 public:
-	PlayerComponent();
+	cam& camera;
+	glm::vec3 position;
+
+	PlayerComponent(cam& camera);
 	~PlayerComponent();
 
-	virtual void update(float deltaTime, Entity &entity, cam &camera) override;
+	virtual void update(float deltaTime) override;
 };

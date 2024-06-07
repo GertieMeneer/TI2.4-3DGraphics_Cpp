@@ -10,13 +10,24 @@ Entity::~Entity()
 	//
 }
 
-void Entity::addComponent(Component* component) {
-	components.push_back(component);
-}
-
-void Entity::update(float deltaTime, Entity &entity, cam &camera) {
-	for (auto &c : components) {
-		c->update(deltaTime, entity, camera)
+void Entity::update(float deltaTime) {
+	if(lifetimeComponent) 
+	{
+		lifetimeComponent->update(deltaTime);
+		if (lifetimeComponent->toBeRemoved) {
+			toBeRemoved = true;
+		}
+	}
+	if (playerComponent)
+	{
+		playerComponent->update(deltaTime);
+	}
+	if (velocityComponent)
+	{
+		for (auto& vertex : vertices)
+		{
+			vertex.position += velocityComponent->velocity * deltaTime;
+		}
 	}
 }
 

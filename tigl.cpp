@@ -253,9 +253,9 @@ void main()
 		outputColor *= texture2D(s_texture, texCoord);
 
 	if(useLighting) {
-		vec3 ambient = vec3(0,0,0);
-		vec3 specular = vec3(0,0,0);
-		vec3 diffuse = vec3(0,0,0);
+		vec3 ambient = vec3(0.0, 0.0, 0.0);
+		vec3 specular = vec3(0.0, 0.0, 0.0);
+		vec3 diffuse = vec3(0.0, 0.0, 0.0);
 
 		for(int i = 0; i < lightCount; i++) {
 		
@@ -303,7 +303,7 @@ void main()
 			glGetProgramInfoLog(programId, length, &charsWritten, infolog);
 			std::cout << "Error compiling shader:\n" << infolog << std::endl;
 			delete[] infolog;
-			//return;
+			return;
 		}
 
 		uniforms[Uniform::ModelMatrix] = glGetUniformLocation(programId, "modelMatrix");
