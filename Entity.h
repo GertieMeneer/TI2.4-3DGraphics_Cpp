@@ -1,31 +1,33 @@
 #pragma once
 
-#include "TransformComponent.h"
-#include "VelocityComponent.h"
 #include "ColliderComponent.h"
 #include "LifetimeComponent.h"
-#include "Component.h"
+#include "PlayerComponent.h"
+#include "VelocityComponent.h"
+
 #include "tigl.h"
-#include "cam.h"
 #include <memory>
 #include <vector>
 #include <list>
 
 using tigl::Vertex;
 
-class Entity : public Component {
+class Entity {
 public:
     glm::vec3 position;
+    std::vector<Vertex> vertices;
+
+    bool toBeRemoved = false;
+
+    ColliderComponent* colliderComponent = nullptr;
+    LifetimeComponent* lifetimeComponent = nullptr;
+    PlayerComponent* playerComponent = nullptr;
+    VelocityComponent* velocityComponent = nullptr;
 
     Entity();
     ~Entity();
 
-    void addComponent(Component* component);
-    virtual void update(float deltaTime, Entity &entity, cam &camera) override;
+    void update(float deltaTime);
     void draw();
-
-private:
-    std::vector<Vertex> vertices;
-    std::list<Component*> components;
 
 };
