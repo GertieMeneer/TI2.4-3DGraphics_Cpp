@@ -16,5 +16,4 @@ public:
 	static std::vector<Vertex> buildFloor();
 	static void drawPlayerColliderBoundsBox(Entity* player);
 	static void drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities);
-	static void SaveScore(std::chrono::steady_clock::time_point start, std::chrono::steady_clock::time_point end, std::string reason);
 };

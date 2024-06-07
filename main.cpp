@@ -6,7 +6,7 @@
 #include <chrono>
 
 #include "tigl.h"
-#include "Util.h"
+#include "FileIO.h"
 #include "Game.h"
 
 using tigl::Vertex;
@@ -69,7 +69,7 @@ void init()
 		{
 			if (key == GLFW_KEY_ESCAPE) {
 				game->endTime = std::chrono::steady_clock::now();
-				Util::SaveScore(game->startTime, game->endTime, "pressed esc key");
+				FileIO::saveScore(game->startTime, game->endTime, "pressed esc key");
 				glfwSetWindowShouldClose(window, true);
 			}
 

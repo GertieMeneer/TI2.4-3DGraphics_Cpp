@@ -1,7 +1,9 @@
 #include "Game.h"
 
 #include <random>
-#include "util.h"
+#include <iostream>
+#include "FileIO.h"
+#include "Util.h"
 
 Game::Game()
 {
@@ -45,7 +47,7 @@ void Game::run(float deltaTime)
 			if (entity.get() != player && checkCollision(*player, *entity)) {
 				std::cout << "Collision detected! Game Over!" << std::endl;
 				endTime = std::chrono::steady_clock::now();
-				Util::SaveScore(startTime, endTime, "collision with block");
+				FileIO::saveScore(startTime, endTime, "collision with block");
 				glfwSetWindowShouldClose(window, true);
 				//close window
 				break;
