@@ -2,13 +2,12 @@
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 
-#include "tigl.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <chrono>
 
+#include "tigl.h"
 #include "Util.h"
 #include "Game.h"
-
-#include <chrono>
 
 using tigl::Vertex;
 
@@ -85,6 +84,25 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.3f, 0.4f, 0.6f, 1.0f);				// "sky" color
 
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
+	tigl::shader->setProjectionMatrix(projection);  
+	tigl::shader->setModelMatrix(glm::mat4(1.0f));
+
+	tigl::shader->enableColorMult(true);
+	tigl::shader->enableColor(true);
+
+	tigl::shader->enableLighting(true);
+	tigl::shader->setLightCount(1);
+	tigl::shader->setLightAmbient(0, glm::vec3(0.1f, 0.1f, 0.1f));
+	tigl::shader->setLightDiffuse(0, glm::vec3(1.0f, 1.0f, 1.0f));
+	tigl::shader->setLightSpecular(0, glm::vec3(1.0f, 1.0f, 1.0f));
+	tigl::shader->setLightPosition(0, glm::vec3(10, 10, 10));
+	tigl::shader->setShinyness(100);
+
+	tigl::shader->enableFog(true);
+
 	// init game
 	game = new Game();
 
@@ -113,17 +131,6 @@ void update(float deltaTime)
 void draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// clear color/depth
-
-	// get and set viewport
-	int viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
-	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(camera->getMatrix());
-	tigl::shader->setModelMatrix(glm::mat4(1.0f));
-	tigl::shader->enableColor(true);
-
-
-
 	game->draw();
 }
