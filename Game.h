@@ -6,6 +6,7 @@ class Game {
 public:
 	std::vector<std::unique_ptr<Entity>> entities;
 	Entity* player;
+	Entity* floor;
 
 	Game();
 	~Game();

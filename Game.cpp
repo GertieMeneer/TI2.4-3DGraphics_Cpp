@@ -18,6 +18,8 @@ void Game::init(cam& camera)
 	player = new Entity();
 	player->playerComponent = new PlayerComponent(camera);
 	player->colliderComponent = new ColliderComponent(glm::vec3(-0.5f), glm::vec3(0.5f));
+
+
 }
 
 void Game::run(float deltaTime)
@@ -31,7 +33,10 @@ void Game::run(float deltaTime)
 
 void Game::draw()
 {
-
+	tigl::drawVertices(GL_QUADS, Util::buildFloor());
+	for (auto& entity : entities) {
+		tigl::drawVertices(GL_QUADS, entity->vertices);
+	}
 }
 
 void Game::updateParticles(float deltaTime)

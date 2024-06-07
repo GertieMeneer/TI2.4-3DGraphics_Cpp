@@ -88,10 +88,6 @@ void init()
 	// init game
 	game = new Game();
 
-	//for (auto& entity : game->entities) {
-	//	player = dynamic_cast<PlayerComponent*>(entity);
-	//}
-
 	// init cam
 	camera = std::make_unique<cam>(window);
 	game->init(*camera);
@@ -147,12 +143,6 @@ void draw()
 	// draw collider box around cube
 	//Util::drawParticleColliderBoundsBox(entities, player);
 #endif // DEBUG
-
-	// draw entities
-	//for (auto& entity : game->entities)
-	//{
-	//	entity->draw();
-	//}
 
 	game->draw();
 }
