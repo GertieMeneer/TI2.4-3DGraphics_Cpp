@@ -1,4 +1,5 @@
 #include "PlayerComponent.h"
+#include <iostream>
 
 PlayerComponent::PlayerComponent(cam& camera) : camera(camera)
 {

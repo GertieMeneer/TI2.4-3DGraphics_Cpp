@@ -92,6 +92,7 @@ void init()
 	camera = std::make_unique<cam>(window);
 	game->init(*camera);
 
+	
 }
 
 /// <summary>
@@ -102,21 +103,8 @@ void init()
 /// <param name="deltaTime"></param>
 void update(float deltaTime)
 {
-	camera->update(window, deltaTime);		// update cam
+	camera->update(window, deltaTime);
 	game->run(deltaTime);
-	//for (auto &entity : game->entities) {
-	//	entity->update(deltaTime, *entity, *camera);
-	//	if (entity.get() != player && checkCollision(*player, *entity))
-	//	{
-	//		std::cout << "Collision detected! Game Over!" << std::endl;
-	//		endTime = std::chrono::steady_clock::now();
-	//		Util::SaveScore(startTime, endTime, "collision with block");
-	//		glfwSetWindowShouldClose(window, true);
-	//	}
-	//}
-
-	// print player position
-	//std::cout << "Player position: " << player->transform->position.x << ", " << player->transform->position.y << ", " << player->transform->position.z << std::endl;
 }
 
 /// <summary>
@@ -130,53 +118,12 @@ void draw()
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
-
 	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(camera->getMatrix());
 	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 	tigl::shader->enableColor(true);
 
-#ifdef DEBUG
-	// draw collider box around player
-	//Util::drawPlayerColliderBoundsBox(player, camera);
 
-	// draw collider box around cube
-	//Util::drawParticleColliderBoundsBox(entities, player);
-#endif // DEBUG
 
 	game->draw();
 }
-
-/// <summary>
-/// Checks if there is a collision between two entities
-/// Does so by checking for overlap along x, y, z axis
-/// </summary>
-/// <param name="a">Entity A</param>
-/// <param name="b">Entity B</param>
-/// <returns>boolean (collision yes or no)</returns>
-//bool checkCollision(Entity& a, Entity& b)
-//{
-//	ColliderComponent* colComp = nullptr;
-//
-//	for (Component* comp : a.components) {
-//		colComp = dynamic_cast<ColliderComponent*>(comp);
-//		if (colComp != nullptr) {
-//			break;
-//		}
-//
-//	}
-//
-//	// convert collider bounds to global coordinates
-//	glm::vec3 aMinBoundsGlobal = a.position + colComp->minBounds;
-//	glm::vec3 aMaxBoundsGlobal = a.position + colComp->maxBounds;
-//	glm::vec3 bMinBoundsGlobal = b.position + colComp->minBounds;
-//	glm::vec3 bMaxBoundsGlobal = b.position + colComp->maxBounds;
-//
-//	// check for overlap along each axis
-//	bool overlapX = (aMinBoundsGlobal.x <= bMaxBoundsGlobal.x && aMaxBoundsGlobal.x >= bMinBoundsGlobal.x);
-//	bool overlapY = (aMinBoundsGlobal.y <= bMaxBoundsGlobal.y && aMaxBoundsGlobal.y >= bMinBoundsGlobal.y);
-//	bool overlapZ = (aMinBoundsGlobal.z <= bMaxBoundsGlobal.z && aMaxBoundsGlobal.z >= bMinBoundsGlobal.z);
-//
-//	// overlap if all axis's overlap
-//	return overlapX && overlapY && overlapZ;
-//}
