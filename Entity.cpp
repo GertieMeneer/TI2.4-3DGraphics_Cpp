@@ -25,6 +25,7 @@ void Entity::update(float deltaTime) {
 	}
 	if (velocityComponent)
 	{
+		this->position += this->velocityComponent->velocity * deltaTime;
 		for (auto& vertex : vertices)
 		{
 			vertex.position += velocityComponent->velocity * deltaTime;

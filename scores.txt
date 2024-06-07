@@ -112,3 +112,39 @@ Reason of death: pressed esc key
 Fri Jun  7 13:46:03 2024: 3 seconds
 Reason of death: pressed esc key
 
+Fri Jun  7 13:51:01 2024: 5 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:53:02 2024: 3 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:53:27 2024: 11 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:55:23 2024: 3 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:55:55 2024: 30 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:56:17 2024: 9 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:56:54 2024: 4 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:57:07 2024: 8 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:58:02 2024: 2 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:58:20 2024: 8 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:58:34 2024: 7 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 13:58:44 2024: 5 seconds
+Reason of death: pressed esc key
+

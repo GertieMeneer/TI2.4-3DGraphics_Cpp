@@ -67,11 +67,7 @@ void Game::draw()
 		}
 	}
 
-#ifdef DEBUG
-	// draw collider box around player
-	//Util::drawPlayerColliderBoundsBox(player, camera);
-
-#endif // DEBUG
+	Util::drawParticleColliderBoundsBox(entities);
 }
 
 void Game::updateParticles(float deltaTime)
