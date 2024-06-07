@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Desktop\3D-game (stef)\Texure.cpp" />
     <ClCompile Include="cam.cpp" />
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -143,6 +144,7 @@
     <ClCompile Include="VelocityComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Desktop\3D-game %28stef%29\Texture.h" />
     <ClInclude Include="Cam.h" />
     <ClInclude Include="ColliderComponent.h" />
     <ClInclude Include="Component.h" />

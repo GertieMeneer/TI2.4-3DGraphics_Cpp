@@ -13,12 +13,16 @@ Game::~Game()
 
 }
 
-void Game::init(cam& camera)
+void Game::init(cam& camera, GLFWwindow& win)
 {
 	auto player = std::make_unique<Entity>();
 	player->playerComponent = new PlayerComponent(camera);
 	player->colliderComponent = new ColliderComponent(glm::vec3(-0.5f), glm::vec3(0.5f));
 	entities.push_back(std::move(player));
+
+	window = &win;
+
+	startTime = std::chrono::steady_clock::now();
 }
 
 void Game::run(float deltaTime)
@@ -40,8 +44,9 @@ void Game::run(float deltaTime)
 		for (auto& entity : entities) {
 			if (entity.get() != player && checkCollision(*player, *entity)) {
 				std::cout << "Collision detected! Game Over!" << std::endl;
-				//endTime = std::chrono::steady_clock::now();
-				//Util::SaveScore(startTime, endTime, "collision with block");
+				endTime = std::chrono::steady_clock::now();
+				Util::SaveScore(startTime, endTime, "collision with block");
+				glfwSetWindowShouldClose(window, true);
 				//close window
 				break;
 			}

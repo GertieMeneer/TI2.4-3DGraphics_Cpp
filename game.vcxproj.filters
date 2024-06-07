@@ -48,6 +48,9 @@
     <ClCompile Include="VelocityComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Desktop\3D-game (stef)\Texure.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cam.h">
@@ -81,6 +84,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gl_includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\3D-game %28stef%29\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

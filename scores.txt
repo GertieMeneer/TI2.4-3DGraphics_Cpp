@@ -220,3 +220,12 @@ Reason of death: pressed esc key
 Fri Jun  7 14:19:22 2024: 7 seconds
 Reason of death: pressed esc key
 
+Fri Jun  7 14:47:05 2024: 3 seconds
+Reason of death: pressed esc key
+
+Fri Jun  7 14:54:06 2024: 1 seconds
+Reason of death: collision with block
+
+Fri Jun  7 14:54:18 2024: 3 seconds
+Reason of death: collision with block
+

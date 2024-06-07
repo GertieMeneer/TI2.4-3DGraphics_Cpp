@@ -14,13 +14,10 @@ using tigl::Vertex;
 GLFWwindow* window;
 Game* game;
 std::unique_ptr<cam> camera;
-std::chrono::steady_clock::time_point startTime;
-std::chrono::steady_clock::time_point endTime;
 
 void init();
 void update(float deltaTime);
 void draw();
-//bool checkCollision(const Entity& a, const Entity& b);
 
 int main(void)
 {
@@ -38,8 +35,6 @@ int main(void)
 
 	tigl::init();
 	init();
-
-	startTime = std::chrono::steady_clock::now(); // Record start time
 
 	float lastTime = (float)glfwGetTime();
 
@@ -73,8 +68,8 @@ void init()
 	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			if (key == GLFW_KEY_ESCAPE) {
-				endTime = std::chrono::steady_clock::now();
-				Util::SaveScore(startTime, endTime, "pressed esc key");
+				game->endTime = std::chrono::steady_clock::now();
+				Util::SaveScore(game->startTime, game->endTime, "pressed esc key");
 				glfwSetWindowShouldClose(window, true);
 			}
 
@@ -103,34 +98,21 @@ void init()
 
 	tigl::shader->enableFog(true);
 
-	// init game
 	game = new Game();
-
-	// init cam
 	camera = std::make_unique<cam>(window);
-	game->init(*camera);
 
-	
+	game->init(*camera, *window);
 }
 
-/// <summary>
-/// Updates cam and player position
-/// Spawns particles/removes, moves entities
-/// Checks for collision
-/// </summary>
-/// <param name="deltaTime"></param>
 void update(float deltaTime)
 {
 	camera->update(window, deltaTime);
 	game->run(deltaTime);
 }
 
-/// <summary>
-/// Draws scene and all entities
-/// </summary>
 void draw()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// clear color/depth
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	tigl::shader->setViewMatrix(camera->getMatrix());
 	game->draw();
 }
