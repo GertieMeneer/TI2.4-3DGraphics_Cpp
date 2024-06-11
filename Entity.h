@@ -4,6 +4,7 @@
 #include "LifetimeComponent.h"
 #include "PlayerComponent.h"
 #include "VelocityComponent.h"
+#include "Texture.h"
 
 #include "tigl.h"
 #include <memory>
@@ -16,6 +17,7 @@ class Entity {
 public:
     glm::vec3 position;
     std::vector<Vertex> vertices;
+    Texture* texture;
 
     bool toBeRemoved = false;
 

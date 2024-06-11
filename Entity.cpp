@@ -35,5 +35,13 @@ void Entity::update(float deltaTime) {
 }
 
 void Entity::draw() {
+	if (texture)
+	{
+		texture->bind();
+		tigl::shader->enableTexture(true);
+	}
 	tigl::drawVertices(GL_QUADS, vertices);
+
+	if (texture)
+		tigl::shader->enableTexture(false);
 }

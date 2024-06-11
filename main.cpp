@@ -96,8 +96,8 @@ void init()
 	tigl::shader->setLightPosition(0, glm::vec3(10, 10, 10));
 	tigl::shader->setShinyness(100);
 
-	tigl::shader->enableFog(true);
-	tigl::shader->setFogExp(0.1f);
+	//tigl::shader->enableFog(true);
+	//tigl::shader->setFogExp(0.1f);
 
 	game = new Game();
 	camera = std::make_unique<cam>(window);

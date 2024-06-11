@@ -139,6 +139,7 @@
     <ClCompile Include="LifetimeComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="tigl.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="VelocityComponent.cpp" />
@@ -153,6 +154,8 @@
     <ClInclude Include="gl_includes.h" />
     <ClInclude Include="LifetimeComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Texture.h" />
     <ClInclude Include="tigl.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="VelocityComponent.h" />

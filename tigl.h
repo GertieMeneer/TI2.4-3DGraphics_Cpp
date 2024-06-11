@@ -121,7 +121,7 @@ namespace tigl
 		}
 
 		// Creates a vertex with a position, color, texture coordinat and normal
-		static Vertex PCTN(const glm::vec3& position, const glm::vec4& color, const glm::vec2& texcoord, const glm::vec3& normal) {
+		static Vertex PTCN(const glm::vec3& position, const glm::vec4& color, const glm::vec2& texcoord, const glm::vec3& normal) {
 			return { position, normal, color, texcoord };
 		}
 	};

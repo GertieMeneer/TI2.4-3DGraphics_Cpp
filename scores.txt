@@ -37,3 +37,27 @@ Reason of death: collision with block
 Mon Jun 10 12:16:49 2024: 5 seconds
 Reason of death: collision with block
 
+Tue Jun 11 19:19:27 2024: 1 seconds
+Reason of death: collision with block
+
+Tue Jun 11 19:19:34 2024: 3 seconds
+Reason of death: collision with block
+
+Tue Jun 11 19:19:41 2024: 3 seconds
+Reason of death: collision with block
+
+Tue Jun 11 19:20:06 2024: 12 seconds
+Reason of death: collision with block
+
+Tue Jun 11 19:21:19 2024: 4 seconds
+Reason of death: collision with block
+
+Tue Jun 11 19:24:06 2024: 3 seconds
+Reason of death: collision with block
+
+Tue Jun 11 19:24:31 2024: 15 seconds
+Reason of death: pressed esc key
+
+Tue Jun 11 19:26:08 2024: 11 seconds
+Reason of death: collision with block
+

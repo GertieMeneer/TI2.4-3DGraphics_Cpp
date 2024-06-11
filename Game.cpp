@@ -62,7 +62,7 @@ void Game::draw()
 	tigl::drawVertices(GL_QUADS, Util::buildFloor());
 
 	for (auto& entity : entities) {
-		tigl::drawVertices(GL_QUADS, entity->vertices);
+		entity->draw();
 
 		Entity* player = nullptr;
 		if (entity->playerComponent) {
@@ -79,7 +79,7 @@ void Game::draw()
 void Game::updateParticles(float deltaTime)
 {
 	entities.erase(std::remove_if(entities.begin(), entities.end(),
-		[](const std::unique_ptr<Entity>& entity) { // Change from shared_ptr to unique_ptr
+		[](const std::unique_ptr<Entity>& entity) {
 			return entity->toBeRemoved;
 		}),
 		entities.end());
@@ -104,13 +104,12 @@ void Game::updateParticles(float deltaTime)
 		// create particle
 		auto particle = std::make_unique<Entity>();
 		particle->position = glm::vec3(randomX, spawnHeight, randomZ);
-
-		//particle->transform.scale = glm::vec3(particleScale);
+		particle->texture = new Texture ("res/cube_texture.png");
 
 		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);		// moving downwards direction
 
 		particle->velocityComponent = new VelocityComponent(direction * particleSpeed);
-		particle->vertices = Util::buildCube(particle->position, glm::vec3(particleScale), glm::vec4(1, 0, 0, 1));
+		particle->vertices = Util::buildCube(particle->position, glm::vec3(particleScale));
 		particle->colliderComponent = new ColliderComponent(glm::vec3(-particleScale), glm::vec3(particleScale));
 		particle->lifetimeComponent = new LifetimeComponent(particleLifetime, std::chrono::steady_clock::now());
 
