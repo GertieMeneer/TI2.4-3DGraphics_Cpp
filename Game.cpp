@@ -49,7 +49,6 @@ void Game::run(float deltaTime)
 				endTime = std::chrono::steady_clock::now();
 				FileIO::saveScore(startTime, endTime, "collision with block");
 				glfwSetWindowShouldClose(window, true);
-				//close window
 				break;
 			}
 		}

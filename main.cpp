@@ -97,6 +97,7 @@ void init()
 	tigl::shader->setShinyness(100);
 
 	tigl::shader->enableFog(true);
+	tigl::shader->setFogExp(0.1f);
 
 	game = new Game();
 	camera = std::make_unique<cam>(window);
