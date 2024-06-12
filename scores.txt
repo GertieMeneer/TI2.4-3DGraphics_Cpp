@@ -154,3 +154,24 @@ Reason of death: pressed esc key
 Thu Jun 13 00:59:54 2024: 12 seconds
 Reason of death: pressed esc key
 
+Thu Jun 13 01:00:41 2024: 1 seconds
+Reason of death: collision with block
+
+Thu Jun 13 01:01:24 2024: 37 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 01:03:22 2024: 2 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 01:03:40 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 01:04:36 2024: 0 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 01:05:20 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 01:05:37 2024: 1 seconds
+Reason of death: pressed esc key
+
