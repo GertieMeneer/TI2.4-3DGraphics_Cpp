@@ -182,6 +182,7 @@ ObjModel::ObjModel(const std::string &fileName)
 	}
 	groups.push_back(currentGroup);
 	amountToMove = 0.001f;
+	rotationAngleY = 0.0f;
 }
 
 
@@ -200,6 +201,7 @@ void ObjModel::update()
 		amountToMove = 0.001f;
 	}
 	position.y += amountToMove;
+	rotationAngleY += 0.1f;
 }
 
 void ObjModel::draw()
@@ -216,9 +218,6 @@ void ObjModel::draw()
 	verticesToDraw.clear();
 
 	for (auto& group : groups) {
-		/*if (group->materialIndex >= 0) {
-			materials[group->materialIndex]->texture->bind();
-		}*/
 		for (auto& face : group->faces) {
 			for (auto& vertex : face.vertices) {
 				glm::vec3 transformedPosition = glm::vec3(modelMatrix * glm::vec4(vertices[vertex.position], 1.0f));
