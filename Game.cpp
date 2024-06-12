@@ -22,6 +22,8 @@ void Game::init(cam& camera, GLFWwindow& win)
 	player->colliderComponent = new ColliderComponent(glm::vec3(-0.5f), glm::vec3(0.5f));
 	entities.push_back(std::move(player));
 
+	model = new ObjModel("res/flag/Flag.obj");
+
 	window = &win;
 
 	startTime = std::chrono::steady_clock::now();
@@ -60,6 +62,7 @@ void Game::run(float deltaTime)
 void Game::draw()
 {
 	tigl::drawVertices(GL_QUADS, Util::buildFloor());
+	model->draw();
 
 	for (auto& entity : entities) {
 		entity->draw();

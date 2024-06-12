@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "ObjModel.h"
 #include <vector>
 
 class Game {
@@ -8,6 +9,7 @@ public:
 	std::chrono::steady_clock::time_point startTime;
 	std::chrono::steady_clock::time_point endTime;
 	GLFWwindow* window;
+	ObjModel* model;
 
 
 	Game();
