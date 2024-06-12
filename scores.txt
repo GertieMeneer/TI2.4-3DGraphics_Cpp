@@ -76,3 +76,63 @@ Reason of death: pressed esc key
 Thu Jun 13 00:44:56 2024: 69 seconds
 Reason of death: pressed esc key
 
+Thu Jun 13 00:52:20 2024: 7 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:52:58 2024: 3 seconds
+Reason of death: collision with block
+
+Thu Jun 13 00:53:11 2024: 9 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:53:31 2024: 4 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:53:40 2024: 2 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:53:51 2024: 3 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:54:06 2024: 3 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:54:14 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:54:22 2024: 2 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:54:29 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:54:40 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:54:48 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:54:57 2024: 1 seconds
+Reason of death: collision with block
+
+Thu Jun 13 00:55:01 2024: 1 seconds
+Reason of death: collision with block
+
+Thu Jun 13 00:56:03 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:56:13 2024: 3 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:56:44 2024: 18 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:57:00 2024: 6 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:57:19 2024: 1 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:57:27 2024: 2 seconds
+Reason of death: pressed esc key
+

@@ -31,6 +31,7 @@ void Game::init(cam& camera, GLFWwindow& win)
 
 void Game::run(float deltaTime)
 {
+	model->update();
 	for (auto& entity : entities) {
 		entity->update(deltaTime);
 

@@ -181,6 +181,7 @@ ObjModel::ObjModel(const std::string &fileName)
 		}
 	}
 	groups.push_back(currentGroup);
+	amountToMove = 0.001f;
 }
 
 
@@ -188,8 +189,18 @@ ObjModel::~ObjModel(void)
 {
 }
 
-
-
+void ObjModel::update()
+{
+	if (position.y > 1.0f)
+	{
+		amountToMove = -0.001f;
+	}
+	if (position.y < -1.0f)
+	{
+		amountToMove = 0.001f;
+	}
+	position.y += amountToMove;
+}
 
 void ObjModel::draw()
 {

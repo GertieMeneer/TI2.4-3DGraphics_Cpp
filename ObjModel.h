@@ -18,6 +18,8 @@ class Texture;
 class ObjModel
 {
 private:
+	float amountToMove;
+
 	class Vertex
 	{
 	public:
@@ -64,6 +66,7 @@ public:
 	ObjModel(const std::string &filename);
 	~ObjModel(void);
 
+	void update();
 	void draw();
 };
 
