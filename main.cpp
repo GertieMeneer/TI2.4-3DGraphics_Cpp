@@ -8,6 +8,7 @@
 #include "tigl.h"
 #include "FileIO.h"
 #include "Game.h"
+#include "Util.h"
 
 using tigl::Vertex;
 
@@ -75,6 +76,8 @@ void init()
 
 		});
 
+	
+
 	// enable depth
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.3f, 0.4f, 0.6f, 1.0f);				// "sky" color
@@ -101,6 +104,11 @@ void init()
 
 	game = new Game();
 	camera = std::make_unique<cam>(window);
+
+	glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods)
+		{
+			game->mouseButtonCallback(button, action, mods);
+		});
 
 	game->init(*camera, *window);
 }

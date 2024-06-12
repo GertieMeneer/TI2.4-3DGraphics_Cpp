@@ -59,7 +59,7 @@ void Game::run(float deltaTime)
 
 void Game::draw()
 {
-	tigl::drawVertices(GL_QUADS, Util::buildFloor());
+	/*tigl::drawVertices(GL_QUADS, Util::buildFloor());
 
 	for (auto& entity : entities) {
 		entity->draw();
@@ -71,9 +71,11 @@ void Game::draw()
 			Util::drawPlayerColliderBoundsBox(player);
 
 		}
-	}
+	}*/
 
-	Util::drawParticleColliderBoundsBox(entities);
+	//Util::drawParticleColliderBoundsBox(entities);
+	tigl::drawVertices(GL_LINES, Util::drawCrosshair());
+
 }
 
 void Game::updateParticles(float deltaTime)
@@ -84,7 +86,7 @@ void Game::updateParticles(float deltaTime)
 		}),
 		entities.end());
 
-	float spawnHeight = 10.0f;
+	float spawnHeight = 20.0f;
 	float spawnTimerThreshold = 0.1f;
 	static float spawnTimer = 0.0f;
 
@@ -137,4 +139,33 @@ bool Game::checkCollision(const Entity& a, const Entity& b)
 
 	// overlap if all axis's overlap
 	return overlapX && overlapY && overlapZ;
+}
+
+void Game::mouseButtonCallback(int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	{
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
+
+		// Calculate center coordinates of the screen
+		int centerX = width / 2;
+		int centerY = height / 2;
+
+		// Read the pixel color at the center of the screen
+		unsigned char pixel[3];
+		glReadPixels(centerX, centerY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+
+		// Check if the pixel color matches any cube's color
+		for (auto it = entities.begin(); it != entities.end(); ++it)
+		{
+			if ((*it)->texture && (*it)->texture->getColor(centerX, centerY) == glm::vec3(pixel[0], pixel[1], pixel[2]))
+			{
+				// Remove the cube from the scene
+				it = entities.erase(it);
+				std::cout << "Hit" << std::endl;
+				break; // Exit loop after removing the cube
+			}
+		}
+	}
 }
