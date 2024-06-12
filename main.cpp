@@ -8,7 +8,6 @@
 #include "tigl.h"
 #include "FileIO.h"
 #include "Game.h"
-#include "ObjModel.h"
 
 using tigl::Vertex;
 
