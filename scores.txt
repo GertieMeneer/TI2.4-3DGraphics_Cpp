@@ -67,3 +67,12 @@ Reason of death: collision with block
 Thu Jun 13 00:41:07 2024: 1 seconds
 Reason of death: pressed esc key
 
+Thu Jun 13 00:41:58 2024: 16 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:42:58 2024: 2 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 00:44:56 2024: 69 seconds
+Reason of death: pressed esc key
+
