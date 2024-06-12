@@ -138,6 +138,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="LifetimeComponent.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjModel.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="tigl.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="gl_includes.h" />
     <ClInclude Include="LifetimeComponent.h" />
+    <ClInclude Include="ObjModel.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.h" />
