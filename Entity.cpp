@@ -31,9 +31,18 @@ void Entity::update(float deltaTime) {
 			vertex.position += velocityComponent->velocity * deltaTime;
 		}
 	}
+	if (modelComponent)
+	{
+		modelComponent->update(deltaTime);
+	}
 }
 
 void Entity::draw() {
+	if (modelComponent)
+	{
+		modelComponent->draw();
+		return;
+	}
 	if (texture)
 	{
 		texture->bind();

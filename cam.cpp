@@ -55,8 +55,8 @@ void cam::update(GLFWwindow* window, float deltaTime)
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         move(90, 10.0f, deltaTime);
 
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-        position.y += 10.0f * deltaTime; // Adjust the velocity as needed
+    /*if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+        position.y += 10.0f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-        position.y -= 10.0f * deltaTime; // Adjust the velocity as needed
+        position.y -= 10.0f * deltaTime;*/
 }

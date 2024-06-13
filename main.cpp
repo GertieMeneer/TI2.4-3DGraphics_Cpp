@@ -138,5 +138,5 @@ void drawCrosshair()
 
 	tigl::drawVertices(GL_LINES, Util::drawCrosshair(centerX, centerY));
 
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);	
 }

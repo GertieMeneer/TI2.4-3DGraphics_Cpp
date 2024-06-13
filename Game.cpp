@@ -20,9 +20,13 @@ void Game::init(cam* camera, GLFWwindow* win)
 	auto player = std::make_unique<Entity>();
 	player->playerComponent = new PlayerComponent(camera);
 	player->colliderComponent = new ColliderComponent(glm::vec3(-0.5f), glm::vec3(0.5f));
+	player->name = "Player";
 	entities.push_back(std::move(player));
 
-	model = new ObjModel("res/flag/Flag.obj");
+	auto flag = std::make_unique<Entity>();
+	flag->modelComponent = new ObjModel("res/flag/Flag.obj");
+	flag->name = "Flag";
+	entities.push_back(std::move(flag));
 
 	window = win;
 
@@ -32,7 +36,7 @@ void Game::init(cam* camera, GLFWwindow* win)
 void Game::run(float deltaTime)
 {
 	powerupTimer += deltaTime;
-	if (powerupTimer >= 10.0f && powerupTimer < 10.2f) {
+	if (powerupTimer >= 10.0f && powerupTimer < 10.2f) {		// to reduce stuttering and lag
 		std::string title = "Power Up Available!";
 		glfwSetWindowTitle(window, title.c_str());
 		canShoot = true;
@@ -41,10 +45,8 @@ void Game::run(float deltaTime)
 		canShoot = false;
 	}
 
-	model->update(deltaTime);
 	for (auto& entity : entities) {
 		entity->update(deltaTime);
-
 	}
 
 	Entity* player = nullptr;
@@ -73,26 +75,24 @@ void Game::run(float deltaTime)
 void Game::draw()
 {
 	tigl::drawVertices(GL_QUADS, Util::buildFloor());
-	model->draw();
 
 	for (auto& entity : entities) {
 		entity->draw();
 
-		Entity* player = nullptr;
+		/*Entity* player = nullptr;
 		if (entity->playerComponent) {
 			player = entity.get();
 
-			//Util::drawPlayerColliderBoundsBox(player);
+			Util::drawPlayerColliderBoundsBox(player);
 
-		}
+		}*/
+		//Util::drawParticleColliderBoundsBox(entities);
 	}
-
-	//Util::drawParticleColliderBoundsBox(entities);
-
 }
 
 void Game::updateParticles(float deltaTime)
 {
+	//remove all entities where property toBeRemoved = true
 	entities.erase(std::remove_if(entities.begin(), entities.end(),
 		[](std::unique_ptr<Entity>& entity) {
 			return entity->toBeRemoved;
@@ -104,7 +104,7 @@ void Game::updateParticles(float deltaTime)
 	std::mt19937 generator(rd());
 
 	spawnTimer += deltaTime;
-	if (spawnTimer >= spawnTimerThreshold)
+	if (spawnTimer >= spawnTimerThreshold)		//spawn new particle
 	{
 		float randomX = distribution(generator);		// generate random float for x coordinate
 		float randomZ = distribution(generator);		// generate random float for z coordinate
@@ -113,6 +113,7 @@ void Game::updateParticles(float deltaTime)
 		auto particle = std::make_unique<Entity>();
 		particle->position = glm::vec3(randomX, spawnHeight, randomZ);
 		particle->texture = new Texture("res/cube_texture.png");
+		particle->name = "Cube";
 
 		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);		// moving downwards direction
 
@@ -126,10 +127,10 @@ void Game::updateParticles(float deltaTime)
 	}
 }
 
-bool Game::checkCollision(const Entity& a, const Entity& b)
+bool Game::checkCollision(Entity& a, Entity& b)
 {
 	// check if both entities have colliders
-	if (!&a.colliderComponent || !&b.colliderComponent)
+	if (!a.colliderComponent || !b.colliderComponent)
 		return false;
 
 	// convert collider bounds to global coordinates
@@ -175,7 +176,6 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 					(pixel[1] != 25 && pixel[1] < 140) &&
 					(pixel[2] != 25 && pixel[2] < 140)) {
 					//  remove all entities on hit
-					std::cout << "Hit" << std::endl;
 					entity->toBeRemoved = true;
 					std::string title = "Recharging Power Up...";
 					glfwSetWindowTitle(window, title.c_str());
