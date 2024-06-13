@@ -20,8 +20,8 @@ void Entity::update(float deltaTime) {
 	}
 	if (playerComponent)
 	{
-		this->position = this->playerComponent->position;
 		playerComponent->update(deltaTime);
+		this->position = this->playerComponent->position;
 	}
 	if (velocityComponent)
 	{
