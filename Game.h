@@ -16,7 +16,7 @@ public:
 	Game();
 	~Game();
 
-	void init(cam *camera, GLFWwindow& window);
+	void init(cam *camera, GLFWwindow *window);
 	void run(float deltaTime);
 	void draw();
 
@@ -28,4 +28,14 @@ public:
 private:
 	float powerupTimer = 0.0f;
 	bool canShoot = false;
+
+	//particle spawn properties
+	float spawnHeight = 20.0f;
+	float spawnTimerThreshold = 0.1f;
+	float spawnTimer = 0.0f;
+
+	//particle speed/lifetime properties
+	float particleSpeed = 10.0f;
+	float particleScale = 0.5f;
+	float particleLifetime = 10.0f;
 };

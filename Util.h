@@ -1,11 +1,11 @@
 #pragma once
-#include "tigl.h"
-#include "Entity.h"
 
 #include <vector>
 #include <iostream>
 #include <chrono>
 
+#include "tigl.h"
+#include "Entity.h"
 
 using tigl::Vertex;
 
@@ -16,6 +16,5 @@ public:
 	static std::vector<Vertex> buildFloor();
 	static void drawPlayerColliderBoundsBox(Entity* player);
 	static void drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities);
-	static std::vector<Vertex> drawCrosshair(const glm::vec2& center);
-
+	static std::vector<Vertex> drawCrosshair(float centerX, float centerY);
 };

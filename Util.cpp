@@ -157,17 +157,17 @@ void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entit
 	}
 }
 
-std::vector<Vertex> Util::drawCrosshair(const glm::vec2& center)
+std::vector<Vertex> Util::drawCrosshair(float centerX, float centerY)
 {
-	float size = 10.0f;
+	float size = 20.0f;
 
 	std::vector<Vertex> verts;
 
-	verts.push_back(Vertex::PC(glm::vec3(center.x - size, center.y, 0), glm::vec4(1, 1, 1, 1)));
-	verts.push_back(Vertex::PC(glm::vec3(center.x + size, center.y, 0), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(centerX - size, centerY, 0), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(centerX + size, centerY, 0), glm::vec4(1, 1, 1, 1)));
 
-	verts.push_back(Vertex::PC(glm::vec3(center.x, center.y - size, 0), glm::vec4(1, 1, 1, 1)));
-	verts.push_back(Vertex::PC(glm::vec3(center.x, center.y + size, 0), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(centerX, centerY - size, 0), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(centerX, centerY + size, 0), glm::vec4(1, 1, 1, 1)));
 
 	return verts;
 }

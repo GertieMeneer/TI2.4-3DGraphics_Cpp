@@ -2,10 +2,6 @@
 #pragma comment(lib, "glew32s.lib")
 #pragma comment(lib, "opengl32.lib")
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <chrono>
-
-#include "tigl.h"
 #include "FileIO.h"
 #include "Game.h"
 #include "Util.h"
@@ -19,10 +15,13 @@ cam* camera;
 int width = 1400;
 int height = 800;
 
+float centerX;
+float centerY;
+
 void init();
 void update(float deltaTime);
 void draw();
-void setOrthographicProjection();
+void drawCrosshair();
 
 int main(void)
 {
@@ -30,6 +29,8 @@ int main(void)
 		throw "Could not initialize glfw";
 
 	window = glfwCreateWindow(width, height, "Cube Cascade", NULL, NULL);
+	centerX = width / 2.0f;
+	centerY = height / 2.0f;
 
 	if (!window)
 	{
@@ -37,6 +38,7 @@ int main(void)
 		throw "Could not initialize glfw";
 	}
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);
 
 	tigl::init();
 	init();
@@ -80,18 +82,14 @@ void init()
 
 		});
 
-	
-
 	// enable depth
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.3f, 0.4f, 0.6f, 1.0f);				// "sky" color
 
-	
 	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
 	tigl::shader->enableColorMult(true);
 	tigl::shader->enableColor(true);
-
 	tigl::shader->enableLighting(true);
 	tigl::shader->setLightCount(1);
 	tigl::shader->setLightAmbient(0, glm::vec3(0.1f, 0.1f, 0.1f));
@@ -111,7 +109,7 @@ void init()
 			game->mouseButtonCallback(button, action, mods);
 		});
 
-	game->init(camera, *window);
+	game->init(camera, window);
 }
 
 void update(float deltaTime)
@@ -122,37 +120,29 @@ void update(float deltaTime)
 
 void draw()
 {
-	// Clear the color and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Set up orthographic projection and draw the crosshair
-	glDisable(GL_DEPTH_TEST); // Disable depth testing for the crosshair
-	setOrthographicProjection(); // Set orthographic projection for 2D drawing
+	drawCrosshair();
 
-	glEnable(GL_DEPTH_TEST); // Enable depth testing back for the 3D scene
-
-	// Set the view and projection matrices for 3D rendering
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
 	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(camera->getMatrix());
 
-	// Draw the game scene
 	game->draw();
 }
 
-void setOrthographicProjection()
+void drawCrosshair()
 {
-	// Calculate center of the screen
-	auto center = glm::vec2(width / 2.0f, height / 2.0f);
+	glDisable(GL_DEPTH_TEST);
 
-	// Set orthographic projection matrix for 2D rendering
 	glm::mat4 ortho = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f);
 	tigl::shader->setProjectionMatrix(ortho);
-	tigl::shader->setViewMatrix(glm::mat4(1.0f)); // Identity matrix for view
-	tigl::shader->setModelMatrix(glm::mat4(1.0f)); // Identity matrix for model
+	tigl::shader->setViewMatrix(glm::mat4(1.0f));
+	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
-	// Draw the crosshair at the center of the screen
-	tigl::drawVertices(GL_LINES, Util::drawCrosshair(center));
+	tigl::drawVertices(GL_LINES, Util::drawCrosshair(centerX, centerY));
+
+	glEnable(GL_DEPTH_TEST);
 }

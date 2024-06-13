@@ -15,7 +15,7 @@ Game::~Game()
 
 }
 
-void Game::init(cam* camera, GLFWwindow& win)
+void Game::init(cam* camera, GLFWwindow* win)
 {
 	auto player = std::make_unique<Entity>();
 	player->playerComponent = new PlayerComponent(camera);
@@ -24,7 +24,7 @@ void Game::init(cam* camera, GLFWwindow& win)
 
 	model = new ObjModel("res/flag/Flag.obj");
 
-	window = &win;
+	window = win;
 
 	startTime = std::chrono::steady_clock::now();
 }
@@ -94,18 +94,11 @@ void Game::draw()
 void Game::updateParticles(float deltaTime)
 {
 	entities.erase(std::remove_if(entities.begin(), entities.end(),
-		[](const std::unique_ptr<Entity>& entity) {
+		[](std::unique_ptr<Entity>& entity) {
 			return entity->toBeRemoved;
 		}),
 		entities.end());
 
-	float spawnHeight = 20.0f;
-	float spawnTimerThreshold = 0.1f;
-	static float spawnTimer = 0.0f;
-
-	float particleSpeed = 10.0f;
-	float particleScale = 0.5f;
-	float particleLifetime = 10.0f;
 	std::uniform_real_distribution<float> distribution(-5.0f, 5.0f);		// random float in range
 	std::random_device rd;
 	std::mt19937 generator(rd());
