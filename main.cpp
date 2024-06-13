@@ -18,6 +18,8 @@ int windowHeight = 800;
 float centerX;
 float centerY;
 
+float fov = 100.0f;
+
 void init();
 void update(float deltaTime);
 void draw();
@@ -38,7 +40,7 @@ int main(void)
 		throw "Could not initialize glfw";
 	}
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);
+	glfwSwapInterval(1);		//vsync, 1=enable, 0=disable
 
 	tigl::init();
 	init();
@@ -62,9 +64,6 @@ int main(void)
 	return 0;
 }
 
-/// <summary>
-/// Sets up GL, camera, player, entities
-/// </summary>
 void init()
 {
 	// get and set max texture size
@@ -76,30 +75,27 @@ void init()
 		{
 			if (key == GLFW_KEY_ESCAPE) {
 				game->endTime = std::chrono::steady_clock::now();
-				FileIO::saveScore(game->startTime, game->endTime, "pressed esc key");
+				FileIO::saveScore(game->startTime, game->endTime, "pressed ESC key");
 				glfwSetWindowShouldClose(window, true);
 			}
-
 		});
 
-	// enable depth
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);			//enable depth
 	glClearColor(0.3f, 0.4f, 0.6f, 1.0f);				// "sky" color
 
-	tigl::shader->setModelMatrix(glm::mat4(1.0f));
-
-	tigl::shader->enableColorMult(true);
-	tigl::shader->enableColor(true);
+	tigl::shader->setModelMatrix(glm::mat4(1.0f));		//4x4 matrix for model, transofmrations: translation, rotation, scaling, shearing
 	tigl::shader->enableLighting(true);
-	tigl::shader->setLightCount(1);
-	tigl::shader->setLightAmbient(0, glm::vec3(0.1f, 0.1f, 0.1f));
 	tigl::shader->setLightDiffuse(0, glm::vec3(1.0f, 1.0f, 1.0f));
 	tigl::shader->setLightSpecular(0, glm::vec3(1.0f, 1.0f, 1.0f));
-	tigl::shader->setLightPosition(0, glm::vec3(10, 10, 10));
+	tigl::shader->setLightPosition(0, glm::vec3(10, 20, 10));
 	tigl::shader->setShinyness(100);
 
-	//tigl::shader->enableFog(true);
-	//tigl::shader->setFogExp(0.1f);
+
+	//this is to enable fog, and set the intensity
+	//does mess with my cube hitting algorithm so for now: disabled
+	//doesn't really add anything to my game anyway :)
+	/*tigl::shader->enableFog(true);
+	tigl::shader->setFogExp(0.01f);*/
 
 	game = new Game();
 	camera = new cam(window);
@@ -120,13 +116,13 @@ void update(float deltaTime)
 
 void draw()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);		//clear previous scene
 
 	drawCrosshair();
 
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
-	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(fov), viewport[2] / (float)viewport[3], 0.01f, 100.0f);		//fov, aspect ratio, near/far clipping planes
 	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(camera->getMatrix());
 
@@ -135,8 +131,6 @@ void draw()
 
 void drawCrosshair()
 {
-	glDisable(GL_DEPTH_TEST);
-
 	glm::mat4 ortho = glm::ortho(0.0f, static_cast<float>(windowWith), static_cast<float>(windowHeight), 0.0f);
 	tigl::shader->setProjectionMatrix(ortho);
 	tigl::shader->setViewMatrix(glm::mat4(1.0f));
