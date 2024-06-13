@@ -1,0 +1,48 @@
+Thu Jun 13 12:01:52 2024: 2 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:02:12 2024: 18 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 12:03:32 2024: 24 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 12:04:02 2024: 20 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 12:04:27 2024: 3 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:04:32 2024: 3 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:04:38 2024: 3 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:05:08 2024: 26 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 12:06:30 2024: 1 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:06:56 2024: 23 seconds
+Reason of death: pressed esc key
+
+Thu Jun 13 12:07:21 2024: 2 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:07:37 2024: 13 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:07:42 2024: 1 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:07:56 2024: 12 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:08:13 2024: 14 seconds
+Reason of death: collision with block
+
+Thu Jun 13 12:08:34 2024: 4 seconds
+Reason of death: collision with block
+

@@ -176,15 +176,18 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 		//>140 = floor
 		for (size_t i = 0; i < entities.size(); ++i) {
 			auto& entity = entities[i];
-			if ((pixel[0] != 25 && pixel[0] < 140) &&
-				(pixel[1] != 25 && pixel[1] < 140) &&
-				(pixel[2] != 25 && pixel[2] < 140)) {
-				//  remove all entities on hit
-				std::cout << "Hit" << std::endl;
-				entity->toBeRemoved = true;
-				std::string title = "Recharging Power Up...";
-				glfwSetWindowTitle(window, title.c_str());
-				powerupTimer = 0.0f;
+			if (!entity->playerComponent)
+			{
+				if ((pixel[0] != 25 && pixel[0] < 140) &&
+					(pixel[1] != 25 && pixel[1] < 140) &&
+					(pixel[2] != 25 && pixel[2] < 140)) {
+					//  remove all entities on hit
+					std::cout << "Hit" << std::endl;
+					entity->toBeRemoved = true;
+					std::string title = "Recharging Power Up...";
+					glfwSetWindowTitle(window, title.c_str());
+					powerupTimer = 0.0f;
+				}
 			}
 		}
 	}
