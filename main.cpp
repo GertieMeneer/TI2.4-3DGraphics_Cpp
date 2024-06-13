@@ -136,7 +136,7 @@ void drawCrosshair()
 	tigl::shader->setViewMatrix(glm::mat4(1.0f));
 	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
-	tigl::drawVertices(GL_LINES, Util::drawCrosshair(centerX, centerY));
+	tigl::drawVertices(GL_LINES, Util::drawCircle(centerX, centerY, 10.0f, 30));
 
 	glEnable(GL_DEPTH_TEST);	
 }

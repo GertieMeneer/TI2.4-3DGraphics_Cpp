@@ -1,3 +1,4 @@
+#define PI 3.14159265358979323846
 #include "Util.h"
 
 std::vector<Vertex> Util::buildCube(const glm::vec3& p, const glm::vec3& s)
@@ -117,17 +118,24 @@ std::vector<Vertex> Util::drawParticleColliderBoundsBox(Entity* particle)
 	return verts;
 }
 
-std::vector<Vertex> Util::drawCrosshair(float centerX, float centerY)
+std::vector<Vertex> Util::drawCircle(float centerX, float centerY, float radius, int segments)
 {
-	float size = 20.0f;
-
 	std::vector<Vertex> verts;
 
-	verts.push_back(Vertex::PC(glm::vec3(centerX - size, centerY, 0), glm::vec4(1, 1, 1, 1)));
-	verts.push_back(Vertex::PC(glm::vec3(centerX + size, centerY, 0), glm::vec4(1, 1, 1, 1)));
+	// Calculate points around the circle
+	for (int i = 0; i < segments; ++i) {
+		float theta = 2.0f * PI * float(i) / float(segments); // Angle of each segment
+		float x = centerX + radius * std::cos(theta);
+		float y = centerY + radius * std::sin(theta);
 
-	verts.push_back(Vertex::PC(glm::vec3(centerX, centerY - size, 0), glm::vec4(1, 1, 1, 1)));
-	verts.push_back(Vertex::PC(glm::vec3(centerX, centerY + size, 0), glm::vec4(1, 1, 1, 1)));
+		verts.push_back(Vertex::PC(glm::vec3(x, y, 0), glm::vec4(1, 1, 1, 1)));
+	}
+
+	// Close the circle by connecting the last point to the first point
+	float theta = 0.0f;
+	float x = centerX + radius * std::cos(theta);
+	float y = centerY + radius * std::sin(theta);
+	verts.push_back(Vertex::PC(glm::vec3(x, y, 0), glm::vec4(1, 1, 1, 1)));
 
 	return verts;
 }
