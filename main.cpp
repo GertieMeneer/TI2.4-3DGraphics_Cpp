@@ -16,8 +16,8 @@ GLFWwindow* window;
 Game* game;
 cam* camera;
 
-int width = 1600;
-int height = 980;
+int width = 1400;
+int height = 800;
 
 void init();
 void update(float deltaTime);

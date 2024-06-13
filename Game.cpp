@@ -31,12 +31,13 @@ void Game::run(float deltaTime)
 {
 	powerupTimer += deltaTime;
 	if (powerupTimer >= 10.0f) {
+		std::string title = "Power Up Available!";
+		glfwSetWindowTitle(window, title.c_str());
 		canShoot = true;
 	}
 	else {
 		canShoot = false;
 	}
-	std::cout << "Can shoot: " << canShoot << std::endl;
 
 	for (auto& entity : entities) {
 		entity->update(deltaTime);
@@ -177,6 +178,8 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 				//  remove all entities on hit
 				std::cout << "Hit" << std::endl;
 				entity->toBeRemoved = true;
+				std::string title = "Recharging Power Up...";
+				glfwSetWindowTitle(window, title.c_str());
 				powerupTimer = 0.0f;
 			}
 		}
