@@ -5,10 +5,10 @@
 
 class PlayerComponent : public Component {
 public:
-	cam& camera;
+	cam *camera;
 	glm::vec3 position;
 
-	PlayerComponent(cam& camera);
+	PlayerComponent(cam *camera);
 	~PlayerComponent();
 
 	virtual void update(float deltaTime) override;

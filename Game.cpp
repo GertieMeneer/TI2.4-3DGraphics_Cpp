@@ -15,7 +15,7 @@ Game::~Game()
 
 }
 
-void Game::init(cam& camera, GLFWwindow& win)
+void Game::init(cam *camera, GLFWwindow& win)
 {
 	auto player = std::make_unique<Entity>();
 	player->playerComponent = new PlayerComponent(camera);
@@ -151,20 +151,23 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 		int centerX = width / 2;
 		int centerY = height / 2;
 
+
 		// Read the pixel color at the center of the screen
 		unsigned char pixel[3];
 		glReadPixels(centerX, centerY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
 
+		std::cout << "Pixel Color (R, G, B): " << static_cast<int>(pixel[0]) << ", " << static_cast<int>(pixel[1]) << ", " << static_cast<int>(pixel[2]) << std::endl;
+
 		// Check if the pixel color matches any cube's color
-		for (auto it = entities.begin(); it != entities.end(); ++it)
-		{
-			if ((*it)->texture && (*it)->texture->getColor(centerX, centerY) == glm::vec3(pixel[0], pixel[1], pixel[2]))
-			{
-				// Remove the cube from the scene
-				it = entities.erase(it);
+		for (size_t i = 0; i < entities.size(); ++i) {
+			auto& entity = entities[i];
+			if (pixel[0] > 25 && pixel[1] > 25 && pixel[2] > 25 &&
+				pixel[0] < 140 && pixel[1] < 140 && pixel[2] < 140) {
 				std::cout << "Hit" << std::endl;
-				break; // Exit loop after removing the cube
+				entity->toBeRemoved = true;
+				break;
 			}
 		}
+
 	}
 }

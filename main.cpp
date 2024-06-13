@@ -14,20 +14,22 @@ using tigl::Vertex;
 
 GLFWwindow* window;
 Game* game;
-std::unique_ptr<cam> camera;
+cam* camera;
+
+int width = 1600;
+int height = 980;
 
 void init();
 void update(float deltaTime);
 void draw();
 void setOrthographicProjection();
 
-
 int main(void)
 {
 	if (!glfwInit())
 		throw "Could not initialize glfw";
 
-	window = glfwCreateWindow(1600, 980, "Cube Cascade", NULL, NULL);
+	window = glfwCreateWindow(width, height, "Cube Cascade", NULL, NULL);
 
 	if (!window)
 	{
@@ -102,14 +104,14 @@ void init()
 	//tigl::shader->setFogExp(0.1f);
 
 	game = new Game();
-	camera = std::make_unique<cam>(window);
+	camera = new cam(window);
 
 	glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods)
 		{
 			game->mouseButtonCallback(button, action, mods);
 		});
 
-	game->init(*camera, *window);
+	game->init(camera, *window);
 }
 
 void update(float deltaTime)
@@ -142,12 +144,6 @@ void draw()
 
 void setOrthographicProjection()
 {
-	// Get viewport dimensions
-	int viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	int width = viewport[2];
-	int height = viewport[3];
-
 	// Calculate center of the screen
 	auto center = glm::vec2(width / 2.0f, height / 2.0f);
 

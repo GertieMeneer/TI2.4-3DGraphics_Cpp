@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "cam.h"
 #include <vector>
 
 class Game {
@@ -8,12 +9,12 @@ public:
 	std::chrono::steady_clock::time_point startTime;
 	std::chrono::steady_clock::time_point endTime;
 	GLFWwindow* window;
-
+	cam* camera;
 
 	Game();
 	~Game();
 
-	void init(cam& camera, GLFWwindow& window);
+	void init(cam *camera, GLFWwindow& window);
 	void run(float deltaTime);
 	void draw();
 
