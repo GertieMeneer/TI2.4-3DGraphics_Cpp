@@ -90,14 +90,15 @@ void Util::drawPlayerColliderBoundsBox(Entity* player)
 		minBounds + glm::vec3(1.0f, 1.0f, 1.0f),     // Top-right-back
 		minBounds + glm::vec3(0.0f, 1.0f, 1.0f)      // Top-left-back
 	};
-
 	// Draw the box using GL_LINES
+	
 	glBegin(GL_LINES);
-	glColor3f(1, 1, 1); // Set color to white
 
 	// Draw lines between corners to form the edges of the box
 	for (int i = 0; i < 4; ++i)
 	{
+		glColor4f(1, 0, 0, 1); // Set color to white
+
 		// Bottom face
 		glVertex3f(corners[i].x, corners[i].y, corners[i].z);
 		glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
@@ -136,7 +137,6 @@ void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entit
 
 			// Draw the box using GL_LINES
 			glBegin(GL_LINES);
-			glColor3f(1.0f, 1.0f, 1.0f); // Set color to white
 
 			// Draw lines between corners to form the edges of the box
 			for (int i = 0; i < 4; ++i) {
@@ -155,4 +155,19 @@ void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entit
 			glEnd();
 		}
 	}
+}
+
+std::vector<Vertex> Util::drawCrosshair(const glm::vec2& center)
+{
+	float size = 10.0f;
+
+	std::vector<Vertex> verts;
+
+	verts.push_back(Vertex::PC(glm::vec3(center.x - size, center.y, 0), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(center.x + size, center.y, 0), glm::vec4(1, 1, 1, 1)));
+
+	verts.push_back(Vertex::PC(glm::vec3(center.x, center.y - size, 0), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(center.x, center.y + size, 0), glm::vec4(1, 1, 1, 1)));
+
+	return verts;
 }

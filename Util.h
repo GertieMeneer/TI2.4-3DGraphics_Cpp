@@ -16,4 +16,6 @@ public:
 	static std::vector<Vertex> buildFloor();
 	static void drawPlayerColliderBoundsBox(Entity* player);
 	static void drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities);
+	static std::vector<Vertex> drawCrosshair(const glm::vec2& center);
+
 };

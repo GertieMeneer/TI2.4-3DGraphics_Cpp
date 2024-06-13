@@ -15,7 +15,7 @@ Game::~Game()
 
 }
 
-void Game::init(cam& camera, GLFWwindow& win)
+void Game::init(cam* camera, GLFWwindow& win)
 {
 	auto player = std::make_unique<Entity>();
 	player->playerComponent = new PlayerComponent(camera);
@@ -31,6 +31,16 @@ void Game::init(cam& camera, GLFWwindow& win)
 
 void Game::run(float deltaTime)
 {
+	powerupTimer += deltaTime;
+	if (powerupTimer >= 10.0f) {
+		std::string title = "Power Up Available!";
+		glfwSetWindowTitle(window, title.c_str());
+		canShoot = true;
+	}
+	else {
+		canShoot = false;
+	}
+
 	model->update();
 	for (auto& entity : entities) {
 		entity->update(deltaTime);
@@ -72,12 +82,13 @@ void Game::draw()
 		if (entity->playerComponent) {
 			player = entity.get();
 
-			Util::drawPlayerColliderBoundsBox(player);
+			//Util::drawPlayerColliderBoundsBox(player);
 
 		}
 	}
 
-	Util::drawParticleColliderBoundsBox(entities);
+	//Util::drawParticleColliderBoundsBox(entities);
+
 }
 
 void Game::updateParticles(float deltaTime)
@@ -88,7 +99,7 @@ void Game::updateParticles(float deltaTime)
 		}),
 		entities.end());
 
-	float spawnHeight = 10.0f;
+	float spawnHeight = 20.0f;
 	float spawnTimerThreshold = 0.1f;
 	static float spawnTimer = 0.0f;
 
@@ -108,7 +119,7 @@ void Game::updateParticles(float deltaTime)
 		// create particle
 		auto particle = std::make_unique<Entity>();
 		particle->position = glm::vec3(randomX, spawnHeight, randomZ);
-		particle->texture = new Texture ("res/cube_texture.png");
+		particle->texture = new Texture("res/cube_texture.png");
 
 		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);		// moving downwards direction
 
@@ -141,4 +152,40 @@ bool Game::checkCollision(const Entity& a, const Entity& b)
 
 	// overlap if all axis's overlap
 	return overlapX && overlapY && overlapZ;
+}
+
+void Game::mouseButtonCallback(int button, int action, int mods)
+{
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && canShoot)
+	{
+		int width, height;
+		glfwGetWindowSize(window, &width, &height);
+
+		// center coords of screen
+		int centerX = width / 2;
+		int centerY = height / 2;
+
+		// read center screen pixel
+		unsigned char pixel[3];
+		glReadPixels(centerX, centerY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
+
+		//std::cout << "color rgb: " << static_cast<int>(pixel[0]) << ", " << static_cast<int>(pixel[1]) << ", " << static_cast<int>(pixel[2]) << std::endl;
+
+		// check if color matches
+		//25 = blue sky
+		//>140 = floor
+		for (size_t i = 0; i < entities.size(); ++i) {
+			auto& entity = entities[i];
+			if ((pixel[0] != 25 && pixel[0] < 140) &&
+				(pixel[1] != 25 && pixel[1] < 140) &&
+				(pixel[2] != 25 && pixel[2] < 140)) {
+				//  remove all entities on hit
+				std::cout << "Hit" << std::endl;
+				entity->toBeRemoved = true;
+				std::string title = "Recharging Power Up...";
+				glfwSetWindowTitle(window, title.c_str());
+				powerupTimer = 0.0f;
+			}
+		}
+	}
 }
