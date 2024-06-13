@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "ObjModel.h"
 #include "cam.h"
 #include <vector>
 
@@ -10,6 +11,7 @@ public:
 	std::chrono::steady_clock::time_point endTime;
 	GLFWwindow* window;
 	cam* camera;
+	ObjModel* model;
 
 	Game();
 	~Game();
