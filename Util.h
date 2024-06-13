@@ -17,4 +17,8 @@ public:
 	static std::vector<Vertex> drawPlayerColliderBoundsBox(Entity* player);
 	static std::vector<Vertex> drawParticleColliderBoundsBox(Entity* particle);
 	static std::vector<Vertex> drawCrosshair(float centerX, float centerY);
+	static std::string replace(std::string str, const std::string& toReplace, const std::string& replacement);
+	static std::vector<std::string> split(std::string str, const std::string& seperator);
+	static std::string toLower(std::string data);
+	static std::string cleanLine(std::string line);
 };

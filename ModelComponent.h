@@ -18,7 +18,7 @@ using tigl::Vertex;
 
 class Texture;
 
-class ObjModel : public Component
+class ModelComponent : public Component
 {
 private:
 	float amountToMove;
@@ -66,8 +66,8 @@ public:
 	glm::vec3 position;
 	float rotationAngleY;
 	float rotationAngleX;
-	ObjModel(const std::string& filename);
-	~ObjModel(void);
+	ModelComponent(const std::string& filename);
+	~ModelComponent();
 
 	virtual void update(float deltaTime) override;
 	void draw();

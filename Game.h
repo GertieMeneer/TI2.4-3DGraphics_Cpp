@@ -11,7 +11,7 @@ public:
 	std::chrono::steady_clock::time_point endTime;
 	GLFWwindow* window;
 	cam* camera;
-	ObjModel* model;
+	ModelComponent* model;
 
 	Game();
 	~Game();

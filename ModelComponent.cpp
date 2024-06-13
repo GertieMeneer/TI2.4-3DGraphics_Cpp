@@ -1,73 +1,7 @@
 #include "ModelComponent.h"
+#include "Util.h"
 
-/**
-* Replaces a substring in a string
-*/
-static std::string replace(std::string str, const std::string& toReplace, const std::string& replacement)
-{
-	size_t index = 0;
-	while (true)
-	{
-		index = str.find(toReplace, index);
-		if (index == std::string::npos)
-			break;
-		str.replace(index, toReplace.length(), replacement);
-		++index;
-	}
-	return str;
-}
-
-/**
-* Splits a string into substrings, based on a seperator
-*/
-static std::vector<std::string> split(std::string str, const std::string& seperator)
-{
-	std::vector<std::string> ret;
-	size_t index;
-	while (true)
-	{
-		index = str.find(seperator);
-		if (index == std::string::npos)
-			break;
-		ret.push_back(str.substr(0, index));
-		str = str.substr(index + 1);
-	}
-	ret.push_back(str);
-	return ret;
-}
-
-/**
-* Turns a string to lowercase
-*/
-static inline std::string toLower(std::string data)
-{
-	std::transform(data.begin(), data.end(), data.begin(), ::tolower);
-	return data;
-}
-
-/**
-* Cleans up a line for processing
-*/
-static inline std::string cleanLine(std::string line)
-{
-	line = replace(line, "\t", " ");
-	while (line.find("  ") != std::string::npos)
-		line = replace(line, "  ", " ");
-	if (line == "")
-		return "";
-	if (line[0] == ' ')
-		line = line.substr(1);
-	if (line == "")
-		return "";
-	if (line[line.length() - 1] == ' ')
-		line = line.substr(0, line.length() - 1);
-	return line;
-}
-
-/**
-* Loads an object model
-*/
-ObjModel::ObjModel(const std::string& fileName)
+ModelComponent::ModelComponent(const std::string& fileName)
 {
 	std::cout << "Loading " << fileName << std::endl;
 	std::string dirName = fileName;
@@ -93,12 +27,12 @@ ObjModel::ObjModel(const std::string& fileName)
 	{
 		std::string line;
 		std::getline(pFile, line);
-		line = cleanLine(line);
+		line = Util::cleanLine(line);
 		if (line == "" || line[0] == '#') //skip empty or commented line
 			continue;
 
-		std::vector<std::string> params = split(line, " ");
-		params[0] = toLower(params[0]);
+		std::vector<std::string> params = Util::split(line, " ");
+		params[0] = Util::toLower(params[0]);
 
 		if (params[0] == "v")
 			vertices.push_back(glm::vec3((float)atof(params[1].c_str()), (float)atof(params[2].c_str()), (float)atof(params[3].c_str())));
@@ -115,7 +49,7 @@ ObjModel::ObjModel(const std::string& fileName)
 				for (size_t i = ii - 3; i < ii; i++)	//magische forlus om van quads triangles te maken ;)
 				{
 					Vertex vertex;
-					std::vector<std::string> indices = split(params[i == (ii - 3) ? 1 : i], "/");
+					std::vector<std::string> indices = Util::split(params[i == (ii - 3) ? 1 : i], "/");
 					if (indices.size() >= 1)	//er is een positie
 						vertex.position = atoi(indices[0].c_str()) - 1;
 					if (indices.size() == 2)		//alleen texture
@@ -163,11 +97,12 @@ ObjModel::ObjModel(const std::string& fileName)
 	rotationAngleY = 0.0f;
 }
 
-ObjModel::~ObjModel(void)
+ModelComponent::~ModelComponent()
 {
+
 }
 
-void ObjModel::update(float deltaTime)
+void ModelComponent::update(float deltaTime)
 {
 	if (position.y > 1.0f)
 	{
@@ -181,7 +116,7 @@ void ObjModel::update(float deltaTime)
 	rotationAngleY += 100.0f * deltaTime;
 }
 
-void ObjModel::draw()
+void ModelComponent::draw()
 {
 	const float scale = 0.1f;
 	glm::mat4 scaling = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
@@ -207,7 +142,7 @@ void ObjModel::draw()
 	tigl::drawVertices(GL_TRIANGLES, verticesToDraw);
 }
 
-void ObjModel::loadMaterialFile(const std::string& fileName, const std::string& dirName)
+void ModelComponent::loadMaterialFile(const std::string& fileName, const std::string& dirName)
 {
 	std::cout << "Loading " << fileName << std::endl;
 	std::ifstream pFile(fileName.c_str());
@@ -223,12 +158,12 @@ void ObjModel::loadMaterialFile(const std::string& fileName, const std::string& 
 	{
 		std::string line;
 		std::getline(pFile, line);
-		line = cleanLine(line);
+		line = Util::cleanLine(line);
 		if (line == "" || line[0] == '#')
 			continue;
 
-		std::vector<std::string> params = split(line, " ");
-		params[0] = toLower(params[0]);
+		std::vector<std::string> params = Util::split(line, " ");
+		params[0] = Util::toLower(params[0]);
 
 		if (params[0] == "newmtl")
 		{
@@ -283,7 +218,7 @@ void ObjModel::loadMaterialFile(const std::string& fileName, const std::string& 
 
 }
 
-ObjModel::MaterialInfo::MaterialInfo()
+ModelComponent::MaterialInfo::MaterialInfo()
 {
 	texture = NULL;
 }

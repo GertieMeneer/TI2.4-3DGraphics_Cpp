@@ -24,7 +24,7 @@ void Game::init(cam* camera, GLFWwindow* win)
 	entities.push_back(std::move(player));
 
 	auto flag = std::make_unique<Entity>();
-	flag->modelComponent = new ObjModel("res/flag/Flag.obj");
+	flag->modelComponent = new ModelComponent("res/flag/Flag.obj");
 	flag->name = "Flag";
 	entities.push_back(std::move(flag));
 

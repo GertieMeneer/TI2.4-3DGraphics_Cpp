@@ -27,7 +27,7 @@ public:
     LifetimeComponent* lifetimeComponent = nullptr;
     PlayerComponent* playerComponent = nullptr;
     VelocityComponent* velocityComponent = nullptr;
-    ObjModel* modelComponent = nullptr;
+    ModelComponent* modelComponent = nullptr;
 
     Entity();
     ~Entity();
