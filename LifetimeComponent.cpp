@@ -6,7 +6,10 @@ LifetimeComponent::LifetimeComponent(float lifetime, const std::chrono::steady_c
 	this->spawnTime = spawnTime;
 }
 
-LifetimeComponent::~LifetimeComponent() {}
+LifetimeComponent::~LifetimeComponent()
+{
+
+}
 
 void LifetimeComponent::update(float deltaTime) {
 	auto currentTime = std::chrono::steady_clock::now();

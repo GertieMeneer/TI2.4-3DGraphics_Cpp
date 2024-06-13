@@ -7,4 +7,7 @@ ColliderComponent::ColliderComponent(glm::vec3 minBounds, glm::vec3 maxBounds)
 	this->maxBounds = maxBounds;
 }
 
-ColliderComponent::~ColliderComponent() {}
+ColliderComponent::~ColliderComponent()
+{
+
+}

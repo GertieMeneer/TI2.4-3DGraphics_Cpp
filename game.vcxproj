@@ -152,7 +152,6 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="gl_includes.h" />
     <ClInclude Include="LifetimeComponent.h" />
     <ClInclude Include="ModelComponent.h" />
     <ClInclude Include="PlayerComponent.h" />

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "gl_includes.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "glm/glm.hpp"
 
 class cam {
@@ -8,7 +9,7 @@ public:
     cam(GLFWwindow* window);
 
     glm::mat4 getMatrix();
-    glm::vec3 getPosition() const;
+    glm::vec3 getPosition();
     void update(GLFWwindow* window, float deltaTime);
 
 private:

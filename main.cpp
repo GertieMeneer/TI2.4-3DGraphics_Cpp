@@ -124,7 +124,7 @@ void draw()
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	glm::mat4 projection = glm::perspective(glm::radians(fov), viewport[2] / (float)viewport[3], 0.01f, 100.0f);		//fov, aspect ratio, near/far clipping planes
 	tigl::shader->setProjectionMatrix(projection);
-	tigl::shader->setViewMatrix(camera->getMatrix());
+	tigl::shader->setViewMatrix(camera->getMatrix());		//sets the viewmatrix to the camera matrix
 
 	game->draw();
 }

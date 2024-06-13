@@ -89,9 +89,6 @@
     <ClInclude Include="VelocityComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="gl_includes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
