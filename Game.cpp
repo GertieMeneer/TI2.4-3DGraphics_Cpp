@@ -168,7 +168,7 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 		//>140 = floor
 		for (size_t i = 0; i < entities.size(); ++i) {
 			auto& entity = entities[i];
-			if (!entity->playerComponent)
+			if (!entity->playerComponent && !entity->modelComponent)
 			{
 				if ((pixel[0] != 25 && pixel[0] < 140) &&
 					(pixel[1] != 25 && pixel[1] < 140) &&
