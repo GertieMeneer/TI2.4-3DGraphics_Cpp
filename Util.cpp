@@ -96,46 +96,35 @@ std::vector<Vertex> Util::drawPlayerColliderBoundsBox(Entity* player)
     return verts;
 }
 
-void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entity>>& entities)
+std::vector<Vertex> Util::drawParticleColliderBoundsBox(Entity* particle)
 {
-	for (const auto& entityPtr : entities) {
-		const Entity& entity = *entityPtr;
-			// Get particle's collider bounds
-			glm::vec3 minBounds = entity.colliderComponent->minBounds + entity.position;
-			glm::vec3 maxBounds = entity.colliderComponent->maxBounds + entity.position;
+	glm::vec3 minBounds = particle->position - glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 maxBounds = particle->position + glm::vec3(0.5f, 0.5f, 0.5f);
 
-			// Calculate the corners of the box relative to the particle's position
-			glm::vec3 corners[8] = {
-				minBounds,
-				glm::vec3(maxBounds.x, minBounds.y, minBounds.z),
-				glm::vec3(maxBounds.x, minBounds.y, maxBounds.z),
-				glm::vec3(minBounds.x, minBounds.y, maxBounds.z),
-				glm::vec3(minBounds.x, maxBounds.y, minBounds.z),
-				glm::vec3(maxBounds.x, maxBounds.y, minBounds.z),
-				maxBounds,
-				glm::vec3(minBounds.x, maxBounds.y, maxBounds.z)
-			};
+	std::vector<Vertex> verts;
 
-			// Draw the box using GL_LINES
-			glBegin(GL_LINES);
+	verts.push_back(Vertex::PC(minBounds, glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
 
-			// Draw lines between corners to form the edges of the box
-			for (int i = 0; i < 4; ++i) {
-				// Bottom face
-				glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-				glVertex3f(corners[(i + 1) % 4].x, corners[(i + 1) % 4].y, corners[(i + 1) % 4].z);
+	//back
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(maxBounds, glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
 
-				// Top face
-				glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-				glVertex3f(corners[((i + 1) % 4) + 4].x, corners[((i + 1) % 4) + 4].y, corners[((i + 1) % 4) + 4].z);
+	//connection front with back
+	verts.push_back(Vertex::PC(minBounds, glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(maxBounds, glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
 
-				// Connections between top and bottom faces
-				glVertex3f(corners[i].x, corners[i].y, corners[i].z);
-				glVertex3f(corners[i + 4].x, corners[i + 4].y, corners[i + 4].z);
-
-			glEnd();
-		}
-	}
+	return verts;
 }
 
 std::vector<Vertex> Util::drawCrosshair(float centerX, float centerY)

@@ -79,14 +79,12 @@ void Game::draw()
 	for (auto& entity : entities) {
 		entity->draw();
 
-		/*Entity* player = nullptr;
-		if (entity->playerComponent) {
-			player = entity.get();
-
-			Util::drawPlayerColliderBoundsBox(player);
-
+		/*if (entity->playerComponent) {
+			auto player = entity.get();
+			tigl::drawVertices(GL_LINES, Util::drawPlayerColliderBoundsBox(player));
 		}*/
-		//Util::drawParticleColliderBoundsBox(entities);
+		//auto particle = entity.get();
+		//tigl::drawVertices(GL_LINES, Util::drawParticleColliderBoundsBox(particle));
 	}
 }
 
