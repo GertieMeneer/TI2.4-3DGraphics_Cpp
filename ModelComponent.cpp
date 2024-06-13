@@ -1,4 +1,4 @@
-#include "ObjModel.h"
+#include "ModelComponent.h"
 
 /**
 * Replaces a substring in a string
@@ -159,7 +159,7 @@ ObjModel::ObjModel(const std::string& fileName)
 		}
 	}
 	groups.push_back(currentGroup);
-	amountToMove = 0.001f;
+	amountToMove = 10.0f;
 	rotationAngleY = 0.0f;
 }
 
@@ -167,18 +167,18 @@ ObjModel::~ObjModel(void)
 {
 }
 
-void ObjModel::update()
+void ObjModel::update(float deltaTime)
 {
 	if (position.y > 1.0f)
 	{
-		amountToMove = -0.001f;
+		amountToMove = -1.0f;
 	}
 	if (position.y < -1.0f)
 	{
-		amountToMove = 0.001f;
+		amountToMove = 1.0f;
 	}
-	position.y += amountToMove;
-	rotationAngleY += 0.1f;
+	position.y += amountToMove * deltaTime;
+	rotationAngleY += 100.0f * deltaTime;
 }
 
 void ObjModel::draw()

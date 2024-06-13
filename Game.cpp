@@ -41,7 +41,7 @@ void Game::run(float deltaTime)
 		canShoot = false;
 	}
 
-	model->update();
+	model->update(deltaTime);
 	for (auto& entity : entities) {
 		entity->update(deltaTime);
 

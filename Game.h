@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.h"
-#include "ObjModel.h"
+#include "ModelComponent.h"
 #include "cam.h"
 #include <vector>
 

@@ -2,6 +2,7 @@
 
 #include "tigl.h"
 #include "Texture.h"
+#include "Component.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <GL/glew.h>
@@ -17,7 +18,7 @@ using tigl::Vertex;
 
 class Texture;
 
-class ObjModel
+class ObjModel : public Component
 {
 private:
 	float amountToMove;
@@ -68,7 +69,7 @@ public:
 	ObjModel(const std::string& filename);
 	~ObjModel(void);
 
-	void update();
+	virtual void update(float deltaTime) override;
 	void draw();
 };
 

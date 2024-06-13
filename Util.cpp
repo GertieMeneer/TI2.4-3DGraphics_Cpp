@@ -1,13 +1,4 @@
-#include <cmath>
-#include <iostream>
-#include <chrono>
-#include <ctime>
-
 #include "Util.h"
-#include "Cam.h"
-
-#include <glm/gtc/matrix_transform.hpp>
-#include <GLFW/glfw3.h>
 
 std::vector<Vertex> Util::buildCube(const glm::vec3& p, const glm::vec3& s)
 {
