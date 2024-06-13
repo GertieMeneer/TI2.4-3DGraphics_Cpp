@@ -157,11 +157,9 @@ void Util::drawParticleColliderBoundsBox(const std::vector<std::unique_ptr<Entit
 	}
 }
 
-std::vector<Vertex> Util::drawCrosshair()
+std::vector<Vertex> Util::drawCrosshair(const glm::vec2& center)
 {
-	// Calculate center of the screen
-	glm::vec2 center(1600 / 2, 980 / 2);
-	float size = 5.0f; // Adjust crosshair size as needed
+	float size = 10.0f; // Adjust crosshair size as needed
 
 	std::vector<Vertex> verts;
 
@@ -173,5 +171,6 @@ std::vector<Vertex> Util::drawCrosshair()
 
 	return verts;
 }
+
 
 

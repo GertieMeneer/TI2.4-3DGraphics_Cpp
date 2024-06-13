@@ -19,6 +19,8 @@ std::unique_ptr<cam> camera;
 void init();
 void update(float deltaTime);
 void draw();
+void setOrthographicProjection();
+
 
 int main(void)
 {
@@ -82,10 +84,7 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.3f, 0.4f, 0.6f, 1.0f);				// "sky" color
 
-	int viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
-	tigl::shader->setProjectionMatrix(projection);  
+	
 	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
 	tigl::shader->enableColorMult(true);
@@ -121,7 +120,43 @@ void update(float deltaTime)
 
 void draw()
 {
+	// Clear the color and depth buffers
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Set up orthographic projection and draw the crosshair
+	glDisable(GL_DEPTH_TEST); // Disable depth testing for the crosshair
+	setOrthographicProjection(); // Set orthographic projection for 2D drawing
+
+	glEnable(GL_DEPTH_TEST); // Enable depth testing back for the 3D scene
+
+	// Set the view and projection matrices for 3D rendering
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glm::mat4 projection = glm::perspective(glm::radians(100.0f), viewport[2] / (float)viewport[3], 0.01f, 100.0f);
+	tigl::shader->setProjectionMatrix(projection);
 	tigl::shader->setViewMatrix(camera->getMatrix());
+
+	// Draw the game scene
 	game->draw();
+}
+
+void setOrthographicProjection()
+{
+	// Get viewport dimensions
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	int width = viewport[2];
+	int height = viewport[3];
+
+	// Calculate center of the screen
+	auto center = glm::vec2(width / 2.0f, height / 2.0f);
+
+	// Set orthographic projection matrix for 2D rendering
+	glm::mat4 ortho = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f);
+	tigl::shader->setProjectionMatrix(ortho);
+	tigl::shader->setViewMatrix(glm::mat4(1.0f)); // Identity matrix for view
+	tigl::shader->setModelMatrix(glm::mat4(1.0f)); // Identity matrix for model
+
+	// Draw the crosshair at the center of the screen
+	tigl::drawVertices(GL_LINES, Util::drawCrosshair(center));
 }

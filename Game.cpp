@@ -59,7 +59,7 @@ void Game::run(float deltaTime)
 
 void Game::draw()
 {
-	/*tigl::drawVertices(GL_QUADS, Util::buildFloor());
+	tigl::drawVertices(GL_QUADS, Util::buildFloor());
 
 	for (auto& entity : entities) {
 		entity->draw();
@@ -68,13 +68,12 @@ void Game::draw()
 		if (entity->playerComponent) {
 			player = entity.get();
 
-			Util::drawPlayerColliderBoundsBox(player);
+			//Util::drawPlayerColliderBoundsBox(player);
 
 		}
-	}*/
+	}
 
 	//Util::drawParticleColliderBoundsBox(entities);
-	tigl::drawVertices(GL_LINES, Util::drawCrosshair());
 
 }
 
