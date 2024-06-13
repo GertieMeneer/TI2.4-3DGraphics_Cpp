@@ -12,8 +12,8 @@ GLFWwindow* window;
 Game* game;
 cam* camera;
 
-int width = 1400;
-int height = 800;
+int windowWith = 1400;
+int windowHeight = 800;
 
 float centerX;
 float centerY;
@@ -28,9 +28,9 @@ int main(void)
 	if (!glfwInit())
 		throw "Could not initialize glfw";
 
-	window = glfwCreateWindow(width, height, "Cube Cascade", NULL, NULL);
-	centerX = width / 2.0f;
-	centerY = height / 2.0f;
+	window = glfwCreateWindow(windowWith, windowHeight, "Cube Cascade", NULL, NULL);
+	centerX = windowWith / 2.0f;
+	centerY = windowHeight / 2.0f;
 
 	if (!window)
 	{
@@ -137,7 +137,7 @@ void drawCrosshair()
 {
 	glDisable(GL_DEPTH_TEST);
 
-	glm::mat4 ortho = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f);
+	glm::mat4 ortho = glm::ortho(0.0f, static_cast<float>(windowWith), static_cast<float>(windowHeight), 0.0f);
 	tigl::shader->setProjectionMatrix(ortho);
 	tigl::shader->setViewMatrix(glm::mat4(1.0f));
 	tigl::shader->setModelMatrix(glm::mat4(1.0f));

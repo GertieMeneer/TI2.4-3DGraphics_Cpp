@@ -32,12 +32,12 @@ void Game::init(cam* camera, GLFWwindow* win)
 void Game::run(float deltaTime)
 {
 	powerupTimer += deltaTime;
-	if (powerupTimer >= 10.0f) {
+	if (powerupTimer >= 10.0f && powerupTimer < 10.2f) {
 		std::string title = "Power Up Available!";
 		glfwSetWindowTitle(window, title.c_str());
 		canShoot = true;
 	}
-	else {
+	else if (powerupTimer < 10.0f) {
 		canShoot = false;
 	}
 
