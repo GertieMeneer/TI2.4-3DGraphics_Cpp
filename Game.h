@@ -22,6 +22,4 @@ public:
 
 	bool checkCollision(const Entity& a, const Entity& b);
 	void mouseButtonCallback(int button, int action, int mods);
-
-private:
 };

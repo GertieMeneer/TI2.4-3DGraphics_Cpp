@@ -15,7 +15,7 @@ Game::~Game()
 
 }
 
-void Game::init(cam *camera, GLFWwindow& win)
+void Game::init(cam* camera, GLFWwindow& win)
 {
 	auto player = std::make_unique<Entity>();
 	player->playerComponent = new PlayerComponent(camera);
@@ -105,7 +105,7 @@ void Game::updateParticles(float deltaTime)
 		// create particle
 		auto particle = std::make_unique<Entity>();
 		particle->position = glm::vec3(randomX, spawnHeight, randomZ);
-		particle->texture = new Texture ("res/cube_texture.png");
+		particle->texture = new Texture("res/cube_texture.png");
 
 		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);		// moving downwards direction
 
@@ -147,27 +147,28 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
 
-		// Calculate center coordinates of the screen
+		// center coords of screen
 		int centerX = width / 2;
 		int centerY = height / 2;
 
-
-		// Read the pixel color at the center of the screen
+		// read center screen pixel
 		unsigned char pixel[3];
 		glReadPixels(centerX, centerY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
 
-		std::cout << "Pixel Color (R, G, B): " << static_cast<int>(pixel[0]) << ", " << static_cast<int>(pixel[1]) << ", " << static_cast<int>(pixel[2]) << std::endl;
+		std::cout << "color rgb: " << static_cast<int>(pixel[0]) << ", " << static_cast<int>(pixel[1]) << ", " << static_cast<int>(pixel[2]) << std::endl;
 
-		// Check if the pixel color matches any cube's color
+		// check if color matches
+		//25 = blue sky
+		//>140 = floor
 		for (size_t i = 0; i < entities.size(); ++i) {
 			auto& entity = entities[i];
-			if (pixel[0] > 25 && pixel[1] > 25 && pixel[2] > 25 &&
-				pixel[0] < 140 && pixel[1] < 140 && pixel[2] < 140) {
+			if ((pixel[0] != 25 && pixel[0] < 140) &&
+				(pixel[1] != 25 && pixel[1] < 140) &&
+				(pixel[2] != 25 && pixel[2] < 140)) {
+				//  remove all entities on hit
 				std::cout << "Hit" << std::endl;
 				entity->toBeRemoved = true;
-				break;
 			}
 		}
-
 	}
 }

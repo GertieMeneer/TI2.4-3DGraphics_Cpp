@@ -27,16 +27,3 @@ void Texture::bind()
 {
     glBindTexture(GL_TEXTURE_2D, id);
 }
-
-glm::vec3 Texture::getColor(int x, int y)
-{
-    if (x >= 0 && x < width && y >= 0 && y < height)
-    {
-        int index = (x + y * width) * 4;
-        float r = colorData[index] / 255.0f;
-        float g = colorData[index + 1] / 255.0f;
-        float b = colorData[index + 2] / 255.0f;
-        return glm::vec3(r, g, b);
-    }
-    return glm::vec3(0.0f);
-}

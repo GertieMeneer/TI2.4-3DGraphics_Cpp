@@ -13,5 +13,4 @@ class Texture
 public:
 	Texture(const std::string &fileName);
 	void bind();
-	glm::vec3 getColor(int x, int y);
 };
