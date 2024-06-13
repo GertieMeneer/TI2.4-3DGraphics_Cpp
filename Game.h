@@ -22,4 +22,8 @@ public:
 
 	bool checkCollision(const Entity& a, const Entity& b);
 	void mouseButtonCallback(int button, int action, int mods);
+
+private:
+	float powerupTimer = 0.0f;
+	bool canShoot = false;
 };

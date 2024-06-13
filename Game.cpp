@@ -29,6 +29,15 @@ void Game::init(cam* camera, GLFWwindow& win)
 
 void Game::run(float deltaTime)
 {
+	powerupTimer += deltaTime;
+	if (powerupTimer >= 10.0f) {
+		canShoot = true;
+	}
+	else {
+		canShoot = false;
+	}
+	std::cout << "Can shoot: " << canShoot << std::endl;
+
 	for (auto& entity : entities) {
 		entity->update(deltaTime);
 
@@ -142,7 +151,7 @@ bool Game::checkCollision(const Entity& a, const Entity& b)
 
 void Game::mouseButtonCallback(int button, int action, int mods)
 {
-	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && canShoot)
 	{
 		int width, height;
 		glfwGetWindowSize(window, &width, &height);
@@ -155,7 +164,7 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 		unsigned char pixel[3];
 		glReadPixels(centerX, centerY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
 
-		std::cout << "color rgb: " << static_cast<int>(pixel[0]) << ", " << static_cast<int>(pixel[1]) << ", " << static_cast<int>(pixel[2]) << std::endl;
+		//std::cout << "color rgb: " << static_cast<int>(pixel[0]) << ", " << static_cast<int>(pixel[1]) << ", " << static_cast<int>(pixel[2]) << std::endl;
 
 		// check if color matches
 		//25 = blue sky
@@ -168,6 +177,7 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 				//  remove all entities on hit
 				std::cout << "Hit" << std::endl;
 				entity->toBeRemoved = true;
+				powerupTimer = 0.0f;
 			}
 		}
 	}
