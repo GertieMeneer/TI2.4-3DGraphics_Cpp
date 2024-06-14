@@ -16,7 +16,7 @@ public:
 	Game();
 	~Game();
 
-	void init(cam *camera, GLFWwindow *window);
+	void init(cam *camera, GLFWwindow *window, float centerX, float centerY);
 	void run(float deltaTime);
 	void draw();
 
@@ -26,6 +26,11 @@ public:
 	void mouseButtonCallback(int button, int action, int mods);
 
 private:
+	//window properties
+	float centerX;
+	float centerY;
+
+	//powerup properties
 	float powerupTimer = 0.0f;
 	bool canShoot = false;
 

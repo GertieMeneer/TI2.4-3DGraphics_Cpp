@@ -60,39 +60,10 @@ std::vector<Vertex> Util::buildFloor() {
 	return verts;
 }
 
-std::vector<Vertex> Util::drawPlayerColliderBoundsBox(Entity* player)
+std::vector<Vertex> Util::drawEntityCollider(Entity* entity)
 {
-    glm::vec3 minBounds = player->playerComponent->position - glm::vec3(0.5f, 0.5f, 0.5f);
-    glm::vec3 maxBounds = player->playerComponent->position + glm::vec3(0.5f, 0.5f, 0.5f);
-
-    std::vector<Vertex> verts;
-
-    verts.push_back(Vertex::PC(minBounds, glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
-
-    verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(maxBounds, glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
-
-    verts.push_back(Vertex::PC(minBounds, glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(maxBounds, glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, minBounds.z), glm::vec4(1, 0, 0, 1)));
-    verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, maxBounds.z), glm::vec4(1, 0, 0, 1)));
-
-    return verts;
-}
-
-std::vector<Vertex> Util::drawParticleColliderBoundsBox(Entity* particle)
-{
-	glm::vec3 minBounds = particle->position - glm::vec3(0.5f, 0.5f, 0.5f);
-	glm::vec3 maxBounds = particle->position + glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 minBounds = entity->position - glm::vec3(0.5f, 0.5f, 0.5f);
+	glm::vec3 maxBounds = entity->position + glm::vec3(0.5f, 0.5f, 0.5f);
 
 	std::vector<Vertex> verts;
 
@@ -118,24 +89,18 @@ std::vector<Vertex> Util::drawParticleColliderBoundsBox(Entity* particle)
 	return verts;
 }
 
-std::vector<Vertex> Util::drawCircle(float centerX, float centerY, float radius, int segments)
-{
+std::vector<Vertex> Util::drawCrosshair(glm::vec3 position) {
 	std::vector<Vertex> verts;
 
-	// Calculate points around the circle
-	for (int i = 0; i < segments; ++i) {
-		float theta = 2.0f * PI * float(i) / float(segments); // Angle of each segment
-		float x = centerX + radius * std::cos(theta);
-		float y = centerY + radius * std::sin(theta);
+	glm::vec3 minBounds = position - glm::vec3(10.0f, 10.0f, 0.0f);
+	glm::vec3 maxBounds = position + glm::vec3(10.0f, 10.0f, 0.0f);
 
-		verts.push_back(Vertex::PC(glm::vec3(x, y, 0), glm::vec4(1, 1, 1, 1)));
-	}
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, minBounds.y, 0.0f), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, minBounds.y, 0.0f), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(maxBounds.x, maxBounds.y, 0.0f), glm::vec4(1, 1, 1, 1)));
+	verts.push_back(Vertex::PC(glm::vec3(minBounds.x, maxBounds.y, 0.0f), glm::vec4(1, 1, 1, 1)));
 
-	// Close the circle by connecting the last point to the first point
-	float theta = 0.0f;
-	float x = centerX + radius * std::cos(theta);
-	float y = centerY + radius * std::sin(theta);
-	verts.push_back(Vertex::PC(glm::vec3(x, y, 0), glm::vec4(1, 1, 1, 1)));
+
 
 	return verts;
 }

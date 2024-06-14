@@ -105,7 +105,7 @@ void init()
 			game->mouseButtonCallback(button, action, mods);
 		});
 
-	game->init(camera, window);
+	game->init(camera, window, centerX, centerY);
 }
 
 void update(float deltaTime)
@@ -136,7 +136,7 @@ void drawCrosshair()
 	tigl::shader->setViewMatrix(glm::mat4(1.0f));
 	tigl::shader->setModelMatrix(glm::mat4(1.0f));
 
-	tigl::drawVertices(GL_LINES, Util::drawCircle(centerX, centerY, 10.0f, 30));
+	tigl::drawVertices(GL_LINES, Util::drawCrosshair(glm::vec3(centerX, centerY, 0)));
 
 	glEnable(GL_DEPTH_TEST);	
 }

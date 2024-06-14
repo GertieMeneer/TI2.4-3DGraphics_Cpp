@@ -15,8 +15,12 @@ Game::~Game()
 
 }
 
-void Game::init(cam* camera, GLFWwindow* win)
+void Game::init(cam* camera, GLFWwindow* win, float x, float y)
 {
+	window = win;
+	centerX = x;
+	centerY = y;
+
 	auto player = std::make_unique<Entity>();
 	player->playerComponent = new PlayerComponent(camera);
 	player->colliderComponent = new ColliderComponent(glm::vec3(-0.5f), glm::vec3(0.5f));
@@ -27,8 +31,6 @@ void Game::init(cam* camera, GLFWwindow* win)
 	flag->modelComponent = new ModelComponent("res/flag/Flag.obj");
 	flag->name = "Flag";
 	entities.push_back(std::move(flag));
-
-	window = win;
 
 	startTime = std::chrono::steady_clock::now();
 }
@@ -60,7 +62,7 @@ void Game::run(float deltaTime)
 	if (player) {
 		for (auto& entity : entities) {
 			if (entity.get() != player && checkCollision(*player, *entity)) {
-				std::cout << "Collision detected! Game Over!" << std::endl;
+				std::cout << "Collision detected! Game Over :(" << std::endl;
 				endTime = std::chrono::steady_clock::now();
 				FileIO::saveScore(startTime, endTime, "collision with block");
 				glfwSetWindowShouldClose(window, true);
@@ -78,13 +80,7 @@ void Game::draw()
 
 	for (auto& entity : entities) {
 		entity->draw();
-
-		/*if (entity->playerComponent) {
-			auto player = entity.get();
-			tigl::drawVertices(GL_LINES, Util::drawPlayerColliderBoundsBox(player));
-		}*/
-		//auto particle = entity.get();
-		//tigl::drawVertices(GL_LINES, Util::drawParticleColliderBoundsBox(particle));
+		//tigl::drawVertices(GL_LINES, Util::drawEntityCollider(entity.get()));
 	}
 }
 
@@ -150,14 +146,7 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 {
 	if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && canShoot)
 	{
-		int width, height;
-		glfwGetWindowSize(window, &width, &height);
-
-		// center coords of screen
-		int centerX = width / 2;
-		int centerY = height / 2;
-
-		// read center screen pixel
+		// read center screen pixel, store in array
 		unsigned char pixel[3];
 		glReadPixels(centerX, centerY, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, pixel);
 
@@ -173,7 +162,6 @@ void Game::mouseButtonCallback(int button, int action, int mods)
 				if ((pixel[0] != 25 && pixel[0] < 140) &&
 					(pixel[1] != 25 && pixel[1] < 140) &&
 					(pixel[2] != 25 && pixel[2] < 140)) {
-					//  remove all entities on hit
 					entity->toBeRemoved = true;
 					std::string title = "Recharging Power Up...";
 					glfwSetWindowTitle(window, title.c_str());
