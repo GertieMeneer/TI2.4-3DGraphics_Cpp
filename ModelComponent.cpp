@@ -28,7 +28,7 @@ ModelComponent::ModelComponent(const std::string& fileName)
 		std::string line;
 		std::getline(pFile, line);
 		line = Util::cleanLine(line);
-		if (line == "" || line[0] == '#') //skip empty or commented line
+		if (line == "" || line[0] == '#')
 			continue;
 
 		std::vector<std::string> params = Util::split(line, " ");
@@ -46,15 +46,15 @@ ModelComponent::ModelComponent(const std::string& fileName)
 			{
 				Face face;
 
-				for (size_t i = ii - 3; i < ii; i++)	//magische forlus om van quads triangles te maken ;)
+				for (size_t i = ii - 3; i < ii; i++)
 				{
 					Vertex vertex;
 					std::vector<std::string> indices = Util::split(params[i == (ii - 3) ? 1 : i], "/");
-					if (indices.size() >= 1)	//er is een positie
+					if (indices.size() >= 1)
 						vertex.position = atoi(indices[0].c_str()) - 1;
-					if (indices.size() == 2)		//alleen texture
+					if (indices.size() == 2)
 						vertex.texcoord = atoi(indices[1].c_str()) - 1;
-					if (indices.size() == 3)		//v/t/n of v//n
+					if (indices.size() == 3)
 					{
 						if (indices[1] != "")
 							vertex.texcoord = atoi(indices[1].c_str()) - 1;
@@ -64,9 +64,6 @@ ModelComponent::ModelComponent(const std::string& fileName)
 				}
 				currentGroup->faces.push_back(face);
 			}
-		}
-		else if (params[0] == "s")
-		{//smoothing groups
 		}
 		else if (params[0] == "mtllib")
 		{
@@ -181,37 +178,7 @@ void ModelComponent::loadMaterialFile(const std::string& fileName, const std::st
 				tex = tex.substr(tex.rfind("/") + 1);
 			if (tex.find("\\"))
 				tex = tex.substr(tex.rfind("\\") + 1);
-			//TODO
-			currentMaterial->texture = new Texture(dirName + "/" + tex);
 		}
-		else if (params[0] == "kd")
-		{//TODO, diffuse color
-		}
-		else if (params[0] == "ka")
-		{//TODO, ambient color
-		}
-		else if (params[0] == "ks")
-		{//TODO, specular color
-		}
-		else if (
-			params[0] == "illum" ||
-			params[0] == "map_bump" ||
-			params[0] == "map_ke" ||
-			params[0] == "map_ka" ||
-			params[0] == "map_d" ||
-			params[0] == "d" ||
-			params[0] == "ke" ||
-			params[0] == "ns" ||
-			params[0] == "ni" ||
-			params[0] == "td" ||
-			params[0] == "tf" ||
-			params[0] == "tr" ||
-			false)
-		{
-			//these values are usually not used for rendering at this time, so ignore them
-		}
-		else
-			std::cout << "Didn't parse " << params[0] << " in material file" << std::endl;
 	}
 	if (currentMaterial != NULL)
 		materials.push_back(currentMaterial);
