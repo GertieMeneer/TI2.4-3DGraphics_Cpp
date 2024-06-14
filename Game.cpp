@@ -108,9 +108,6 @@ void Game::updateParticles(float deltaTime)
 		particle->position = glm::vec3(randomX, spawnHeight, randomZ);
 		particle->texture = new Texture("res/cube_texture.png");
 		particle->name = "Cube";
-
-		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);		// moving downwards direction
-
 		particle->velocityComponent = new VelocityComponent(direction * particleSpeed);
 		particle->vertices = Util::buildCube(particle->position, glm::vec3(particleScale));
 		particle->colliderComponent = new ColliderComponent(glm::vec3(-particleScale), glm::vec3(particleScale));
@@ -127,7 +124,6 @@ bool Game::checkCollision(Entity& a, Entity& b)
 	if (!a.colliderComponent || !b.colliderComponent)
 		return false;
 
-	// convert collider bounds to global coordinates
 	glm::vec3 aMinBoundsGlobal = a.position + a.colliderComponent->minBounds;
 	glm::vec3 aMaxBoundsGlobal = a.position + a.colliderComponent->maxBounds;
 	glm::vec3 bMinBoundsGlobal = b.position + b.colliderComponent->minBounds;
@@ -138,7 +134,6 @@ bool Game::checkCollision(Entity& a, Entity& b)
 	bool overlapY = (aMinBoundsGlobal.y <= bMaxBoundsGlobal.y && aMaxBoundsGlobal.y >= bMinBoundsGlobal.y);
 	bool overlapZ = (aMinBoundsGlobal.z <= bMaxBoundsGlobal.z && aMaxBoundsGlobal.z >= bMinBoundsGlobal.z);
 
-	// overlap if all axis's overlap
 	return overlapX && overlapY && overlapZ;
 }
 

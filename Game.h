@@ -40,6 +40,7 @@ private:
 	float spawnTimer = 0.0f;
 
 	//particle speed/lifetime properties
+	glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);		// moving downwards direction
 	float particleSpeed = 10.0f;
 	float particleScale = 0.5f;
 	float particleLifetime = 10.0f;
