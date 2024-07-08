@@ -3,6 +3,6 @@
 ## Course Description
 In these two courses I had to make a 3D game using C++ and OpenGL.
 
-## grade
+## Grade
 3D: 7.3 / 10.0
 C++: 8.5 / 10.0
